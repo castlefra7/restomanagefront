@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane fx:controller="mg.ankoay.restomanagefinal.productlist.view.ProductListCtl" xmlns:fx="http://javafx.com/fxml">
+	<left>
+		<fx:include source="ProductSelect.fxml"/>
+	</left>
+	<center>
+		<VBox>
+			<Label text="Categories" />
+			<FlowPane fx:id="categories" />
+			<Label text="Produits" />
+			<ScrollPane fitToHeight="true" fitToWidth="true">
+				<FlowPane fx:id="products" />
+			</ScrollPane>
+			<padding>
+				<Insets top="10" left="10" right="10" bottom="10"/>
+			</padding>
+		</VBox>
+	</center>
+</BorderPane>
