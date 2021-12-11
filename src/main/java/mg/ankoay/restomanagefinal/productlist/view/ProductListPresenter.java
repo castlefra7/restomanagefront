@@ -1,5 +1,176 @@
 package mg.ankoay.restomanagefinal.productlist.view;
 
-public class ProductListPresenter {
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Locale;
+
+import javafx.collections.ListChangeListener;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import mg.ankoay.restomanagefinal.commons.model.Category;
+import mg.ankoay.restomanagefinal.commons.model.Product;
+import mg.ankoay.restomanagefinal.commons.model.Table;
+import mg.ankoay.restomanagefinal.commons.view.Presenter;
+import mg.ankoay.restomanagefinal.productlist.model.ProductListModel;
+import mg.ankoay.restomanagefinal.productorders.model.ProductOrder;
+import mg.ankoay.restomanagefinal.productorders.model.ProductOrderModel;
+import mg.ankoay.restomanagefinal.productorders.view.ProductOrderCtl;
+import mg.ankoay.restomanagefinal.productorders.view.ProductOrderPresenter;
+
+public class ProductListPresenter extends Presenter {
+	private final ProductListModel model;
+	private final ProductListCtl view;
+
+	public ProductListPresenter(ProductListCtl _productListCtl, Scene _parent) {
+		this.model = ProductListModel.getInstance();
+		this.view = _productListCtl;
+		this.scene = _parent;
+		this.attachEvents();
+	}
+
+	public void attachEvents() {
+		leftEvent();
+		centerEvent();
+	}
+
+	public void leftEvent() {
+		this.view.totalPriceLbl.textProperty().bind(this.model.getTotalPrice().asString(Locale.FRENCH, "%,.2f MGA"));
+
+		this.view.sldProdTbl.getSelectionModel().selectedItemProperty().addListener((obs, oldSelect, newSelect) -> {
+			Product selectedValue = newSelect;
+			this.model.getProductSelected().setValue(selectedValue);
+
+			if (selectedValue != null) {
+				this.view.qtyTxt.setText(String.valueOf(selectedValue.getQuantity()));
+				this.view.prodNameLbl.setText(selectedValue.getName());
+			} else {
+				this.view.qtyTxt.setText("");
+				this.view.prodNameLbl.setText("");
+			}
+		});
+
+		this.view.incQtyBtn.setOnAction(e -> {
+			Product selectedValue = this.model.getProductSelected().getValue();
+			if (selectedValue != null) {
+				selectedValue.setQuantity(selectedValue.getQuantity() + 1);
+				this.view.qtyTxt.setText(String.valueOf(selectedValue.getQuantity()));
+			}
+		});
+
+		this.view.decQtyBtn.setOnAction(e -> {
+			Product selectedValue = this.model.getProductSelected().getValue();
+			if (selectedValue != null) {
+				if (selectedValue.getQuantity() == 1) {
+					this.model.getProductSltList().remove(selectedValue);
+				} else {
+					selectedValue.setQuantity(selectedValue.getQuantity() - 1);
+					this.view.qtyTxt.setText(String.valueOf(selectedValue.getQuantity()));
+				}
+			}
+		});
+
+		this.view.orderBtn.setOnAction(e -> {
+			try {
+				showProductOrder();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
+		});
+
+		this.view.cmbTables.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+			Table selectedTable = newVal;
+			this.model.getTableSelected().setValue(selectedTable);
+		});
+	}
+
+	public void centerEvent() {
+		EventHandler<ActionEvent> catHandler = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Button source = (Button) event.getSource();
+				Category categ = (Category) source.getUserData();
+				model.filterProduct(categ.getId());
+				event.consume();
+			}
+		};
+
+		EventHandler<ActionEvent> prodHandler = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Button source = (Button) event.getSource();
+				Product prod = (Product) source.getUserData();
+				model.addProduct(prod);
+				event.consume();
+			}
+		};
+
+		for (Category cat : this.model.getCategoryList()) {
+			Button btn = new Button(cat.getName());
+			btn.setPrefSize(250, 100);
+			btn.setUserData(cat);
+			btn.setOnAction(catHandler);
+			this.view.categories.getChildren().add(btn);
+		}
+		fillProducts(prodHandler);
+
+		this.model.getProductList().addListener(new ListChangeListener<Product>() {
+			@Override
+			public void onChanged(Change<? extends Product> arg0) {
+				view.products.getChildren().clear();
+				fillProducts(prodHandler);
+			}
+		});
+	}
+
+// LEFT PANE METHODS
+	private void showProductOrder() throws Exception {
+// Checking can open new scene
+		if (this.model.getProductSltList().size() < 1 || this.model.getTableSelected().getValue() == null)
+			return;
+// Adding new items
+		ProductOrder prdOrd = new ProductOrder();
+		prdOrd.setTable(this.model.getTableSelected().getValue());
+		prdOrd.setDate(new Timestamp((new Date()).getTime()));
+		for (Product product : this.model.getProductSltList()) {
+			prdOrd.getProducts().add(new Product(product.getId(), product.getName(), product.getPrice(),
+					product.getIdCategory(), product.getQuantity()));
+			product.reset();
+		}
+		ProductOrderModel.getInstance().getProductOrders().add(prdOrd);
+// Open Scene		
+		FXMLLoader prdOrder = new FXMLLoader(
+				getClass().getResource("/mg/ankoay/restomanagefinal/productorders/view/ProductOrder.fxml"));
+		Parent root = prdOrder.load();
+		ProductOrderCtl prdCtl = prdOrder.getController();
+
+		Scene scene = new Scene(root);
+		ProductOrderPresenter prdOrdPres = new ProductOrderPresenter(prdCtl, scene, this.getScene());
+		prdOrdPres.setPrimaryStage(this.getPrimaryStage());
+
+		this.getPrimaryStage().setScene(scene);
+		this.getPrimaryStage().setFullScreen(true);
+// Clean selected products
+		this.model.getProductSltList().clear();
+	}
+
+// CENTER PANE METHODS
+	private void fillProducts(EventHandler<ActionEvent> event) {
+		for (Product prd : this.model.getProductList()) {
+			Button btn = new Button(prd.getName() + " " + prd.getPrice());
+			btn.setPrefSize(250, 100);
+			btn.setUserData(prd);
+			btn.setOnAction(event);
+			this.view.products.getChildren().add(btn);
+		}
+	}
 
 }
+
+// this.view.totalPriceLbl.textProperty().bind(Bindings.createStringBinding(
+// () -> numbFormat.format(this.model.getTotalPrice().get()) + " MGA",
+// this.model.getTotalPrice()));

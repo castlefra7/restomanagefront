@@ -4,14 +4,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import mg.ankoay.restomanagefinal.productlist.model.ProductListModel;
+import mg.ankoay.restomanagefinal.productlist.view.ProductListCtl;
+import mg.ankoay.restomanagefinal.productlist.view.ProductListPresenter;
 
 public class RunApplication extends Application {
 	protected static int counter = 0;
-	protected Stage lastOpenStage;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -19,28 +18,35 @@ public class RunApplication extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		primaryStage.setTitle("POS Restaurant");
 		ProductListModel.getInstance().loadData();
 
 		FXMLLoader prdList = new FXMLLoader(
 				getClass().getResource("/mg/ankoay/restomanagefinal/productlist/view/ProductList.fxml"));
 		Parent root = prdList.load();
+		ProductListCtl productListCtl = prdList.getController();
 
-// Show the Scene
-		// Screen screen = Screen.getPrimary();
-		// Rectangle2D bounds = screen.getVisualBounds();
-		// Scene scene = new Scene(root, bounds.getWidth() - 100, bounds.getHeight() -
-		// 100);
 		Scene scene = new Scene(root);
+
+		ProductListPresenter productListPres = new ProductListPresenter(productListCtl, scene);
+		productListPres.setPrimaryStage(primaryStage);
+
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		primaryStage.setFullScreen(true);
-
-		this.lastOpenStage = primaryStage;
+		primaryStage.setFullScreenExitHint("");
 	}
+}
 
-	// Button openButton = new Button("Open");
-	// openButton.setOnAction(e -> open(++counter));
-	// root.setBottom(openButton);
+//Screen screen = Screen.getPrimary();
+//Rectangle2D bounds = screen.getVisualBounds();
+//Scene scene = new Scene(root, bounds.getWidth() - 100, bounds.getHeight()
+//-100);
+//protected Stage lastOpenStage;
+//this.lastOpenStage = primaryStage;
+//Button openButton = new Button("Open");
+//openButton.setOnAction(e -> open(++counter));
+//root.setBottom(openButton);
 //	private void open(int stageNumber) {
 //		Stage stage = new Stage();
 //		stage.setTitle("#" + stageNumber);
@@ -60,4 +66,3 @@ public class RunApplication extends Application {
 //		stage.showAndWait();
 //		System.out.println("After stage.showAndWait(): " + stageNumber);
 //	}
-}

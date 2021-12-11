@@ -1,7 +1,11 @@
 package mg.ankoay.restomanagefinal.productlist.model;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
@@ -12,38 +16,37 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import mg.ankoay.restomanagefinal.commons.attributes.CategoryAttr;
+import mg.ankoay.restomanagefinal.commons.attributes.ProductAttr;
+import mg.ankoay.restomanagefinal.commons.model.Category;
+import mg.ankoay.restomanagefinal.commons.model.Product;
+import mg.ankoay.restomanagefinal.commons.model.Table;
+import mg.ankoay.restomanagefinal.commons.utils.ResponseBody;
+import mg.ankoay.restomanagefinal.commons.utils.Utils;
 
 public class ProductListModel {
 	private final ObservableList<Product> productList = FXCollections.observableArrayList(
 			product -> new Observable[] { product.idProperty(), product.nameProperty(), product.priceProperty() });
-
 	private final ObservableList<Category> categoryList = FXCollections
 			.observableArrayList(category -> new Observable[] { category.idProperty(), category.nameProperty() });
 
-	private final ObservableList<Product> productSltList = FXCollections.observableArrayList(
-			product -> new Observable[] { product.idProperty(), product.nameProperty(), product.priceProperty() });
+	private final ObservableList<Product> productSltList = FXCollections
+			.observableArrayList(product -> new Observable[] { product.quantityProperty() });
+	private final ObjectProperty<Product> productSelected = new SimpleObjectProperty<>();
 
 	private final List<Product> productAll = new ArrayList<>();
-
-	private final ObjectProperty<Product> productSelected = new SimpleObjectProperty<>();
 	private final SimpleDoubleProperty totalPrice = new SimpleDoubleProperty();
+
+	private ObservableList<Table> tableList = FXCollections.observableArrayList();
+	private ObjectProperty<Table> tableSelected = new SimpleObjectProperty<>();
 
 	private static final ProductListModel INSTANCE = new ProductListModel();
 
-	public static ProductListModel getInstance() {
-		return INSTANCE;
+	public ProductListModel() {
+		attachListeners();
 	}
 
-	// Constructors
-	public ProductListModel() {
-// TODO: Get it from Database		
-		productAll.add(new Product("1", "burger poulet", 10000, "1", 1));
-		productAll.add(new Product("2", "panini", 15000, "1", 1));
-		productAll.add(new Product("3", "glace simple", 15000, "2", 1));
-		for (int i = 4; i <= 100; i++) {
-			productAll.add(new Product(String.valueOf(i), "a", 12000, "1", 1));
-		}
-// Listeners
+	public void attachListeners() {
 		ListChangeListener<Product> sltListProdListener = new ListChangeListener<Product>() {
 			@Override
 			public void onChanged(Change<? extends Product> prod) {
@@ -60,7 +63,6 @@ public class ProductListModel {
 
 		productSltList.addListener(sltListProdListener);
 		productSelected.addListener(new ChangeListener<Product>() {
-
 			@Override
 			public void changed(ObservableValue<? extends Product> observable, Product oldValue, Product newValue) {
 				if (productSelected.getValue() != null) {
@@ -72,6 +74,11 @@ public class ProductListModel {
 	}
 
 // Functions
+
+	public static ProductListModel getInstance() {
+		return INSTANCE;
+	}
+
 	public double totalPrice() {
 		double result = 0;
 		for (Product prod : this.productSltList) {
@@ -99,9 +106,38 @@ public class ProductListModel {
 	}
 
 	public void loadData() {
-		productList.setAll(productAll);
-		this.categoryList.setAll(new Category("0", "Tous"), new Category("1", "Burger"), new Category("2", "Glace"));
+		// TODO: Get it from Database
 
+		try {
+
+			Gson gson = new Gson();
+			Type type = new TypeToken<ResponseBody<CategoryAttr>>() {
+			}.getType();
+			ResponseBody<CategoryAttr> respCat = gson
+					.fromJson(Utils.getJSON("http://localhost:8080/api/back/product-categories"), type);
+			List<CategoryAttr> categories = respCat.getData();
+			for (CategoryAttr categ : categories) {
+				Category trueCateg = new Category(String.valueOf(categ.getId()), categ.getName());
+				this.categoryList.add(trueCateg);
+			}
+
+			Type typeProd = new TypeToken<ResponseBody<ProductAttr>>() {
+			}.getType();
+			ResponseBody<ProductAttr> respProd = gson
+					.fromJson(Utils.getJSON("http://localhost:8080/api/back/products"), typeProd);
+			List<ProductAttr> products = respProd.getData();
+			for (ProductAttr prod : products) {
+				Product trueProd = new Product(String.valueOf(prod.getId()), prod.getName(), prod.getPrice(),
+						String.valueOf(prod.getId_category()), 1);
+				productAll.add(trueProd);
+			}
+			this.productList.setAll(productAll);
+			tableList.add(new Table("1", "Table 1"));
+			tableList.add(new Table("2", "Table 2"));
+			tableList.add(new Table("3", "Table 3"));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 // Getters
@@ -123,6 +159,14 @@ public class ProductListModel {
 
 	public SimpleDoubleProperty getTotalPrice() {
 		return totalPrice;
+	}
+
+	public ObservableList<Table> getTableList() {
+		return this.tableList;
+	}
+
+	public ObjectProperty<Table> getTableSelected() {
+		return this.tableSelected;
 	}
 
 }

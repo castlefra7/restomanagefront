@@ -1,4 +1,4 @@
-package mg.ankoay.restomanagefinal.productlist.model;
+package mg.ankoay.restomanagefinal.commons.model;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -8,6 +8,7 @@ public class Category {
 	private final StringProperty name = new SimpleStringProperty(this, "name", null);
 	
 // Constructors
+	public Category() {}
 	public Category(String _id, String _name) {
 		this.id.set(_id);
 		this.name.set(_name);

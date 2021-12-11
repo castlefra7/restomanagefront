@@ -1,4 +1,4 @@
-package mg.ankoay.restomanagefinal.productlist.model;
+package mg.ankoay.restomanagefinal.commons.model;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
@@ -33,6 +33,11 @@ public class Product {
 		this.idCategory.set(_idCateg);
 		this.quantity.set(_quantity);
 		this.total.set(_quantity * _price);
+	}
+
+// Methods
+	public void reset() {
+		this.setQuantity(1);
 	}
 
 // Properties	
