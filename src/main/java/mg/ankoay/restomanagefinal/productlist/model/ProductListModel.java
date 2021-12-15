@@ -18,6 +18,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import mg.ankoay.restomanagefinal.commons.attributes.CategoryAttr;
 import mg.ankoay.restomanagefinal.commons.attributes.ProductAttr;
+import mg.ankoay.restomanagefinal.commons.attributes.TableAttr;
 import mg.ankoay.restomanagefinal.commons.model.Category;
 import mg.ankoay.restomanagefinal.commons.model.Product;
 import mg.ankoay.restomanagefinal.commons.model.Table;
@@ -25,6 +26,8 @@ import mg.ankoay.restomanagefinal.commons.utils.ResponseBody;
 import mg.ankoay.restomanagefinal.commons.utils.Utils;
 
 public class ProductListModel {
+	private String URL = "http://localhost:8080/api/back";
+
 	private final ObservableList<Product> productList = FXCollections.observableArrayList(
 			product -> new Observable[] { product.idProperty(), product.nameProperty(), product.priceProperty() });
 	private final ObservableList<Category> categoryList = FXCollections
@@ -106,15 +109,12 @@ public class ProductListModel {
 	}
 
 	public void loadData() {
-		// TODO: Get it from Database
-
 		try {
-
 			Gson gson = new Gson();
+
 			Type type = new TypeToken<ResponseBody<CategoryAttr>>() {
 			}.getType();
-			ResponseBody<CategoryAttr> respCat = gson
-					.fromJson(Utils.getJSON("http://localhost:8080/api/back/product-categories"), type);
+			ResponseBody<CategoryAttr> respCat = gson.fromJson(Utils.getJSON(URL + "/product-categories"), type);
 			List<CategoryAttr> categories = respCat.getData();
 			for (CategoryAttr categ : categories) {
 				Category trueCateg = new Category(String.valueOf(categ.getId()), categ.getName());
@@ -123,18 +123,24 @@ public class ProductListModel {
 
 			Type typeProd = new TypeToken<ResponseBody<ProductAttr>>() {
 			}.getType();
-			ResponseBody<ProductAttr> respProd = gson
-					.fromJson(Utils.getJSON("http://localhost:8080/api/back/products"), typeProd);
+			ResponseBody<ProductAttr> respProd = gson.fromJson(Utils.getJSON(URL + "/products"), typeProd);
 			List<ProductAttr> products = respProd.getData();
 			for (ProductAttr prod : products) {
 				Product trueProd = new Product(String.valueOf(prod.getId()), prod.getName(), prod.getPrice(),
-						String.valueOf(prod.getId_category()), 1);
+						String.valueOf(prod.getCategory().getId()), 1);
 				productAll.add(trueProd);
 			}
 			this.productList.setAll(productAll);
-			tableList.add(new Table("1", "Table 1"));
-			tableList.add(new Table("2", "Table 2"));
-			tableList.add(new Table("3", "Table 3"));
+
+			Type typeTbl = new TypeToken<ResponseBody<TableAttr>>() {
+			}.getType();
+			ResponseBody<TableAttr> respTbl = gson.fromJson(Utils.getJSON(URL + "/tables"), typeTbl);
+			List<TableAttr> tables = respTbl.getData();
+			for (TableAttr tbl : tables) {
+				Table trueTbl = new Table(String.valueOf(tbl.getId()), tbl.getName());
+				this.tableList.add(trueTbl);
+			}
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

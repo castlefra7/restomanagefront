@@ -4,8 +4,33 @@ public class ProductAttr {
 	private Integer id;
 	private String name;
 	private Integer id_affiliate;
-	private Integer id_category;
 	private Double price;
+	private CategoryAttr category;
+	private Integer quantity;
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public ProductAttr() {
+
+	}
+
+	public ProductAttr(Integer _id) {
+		this.id = _id;
+	}
+
+	public CategoryAttr getCategory() {
+		return category;
+	}
+
+	public void setCategory(CategoryAttr category) {
+		this.category = category;
+	}
 
 	public Integer getId() {
 		return id;
@@ -29,14 +54,6 @@ public class ProductAttr {
 
 	public void setId_affiliate(Integer id_affiliate) {
 		this.id_affiliate = id_affiliate;
-	}
-
-	public Integer getId_category() {
-		return id_category;
-	}
-
-	public void setId_category(Integer id_category) {
-		this.id_category = id_category;
 	}
 
 	public Double getPrice() {

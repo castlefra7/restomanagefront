@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<BorderPane fx:controller="mg.ankoay.restomanagefinal.login.view.LoginCtl" xmlns:fx="http://javafx.com/fxml">
+	<center>
+		<VBox>
+			<Label text="Nom utilisateur" />
+			<TextField fx:id="txtUsername" />
+			<Label text="Mot de passe" />
+			<TextField fx:id="txtPassword" />
+			<Button fx:id="btnLogin" text="Se connecter" />
+		</VBox>
+	</center>
+	<padding>
+		<Insets top="10" left="10" right="10" bottom="10"/>
+	</padding>
+</BorderPane>

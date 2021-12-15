@@ -8,6 +8,7 @@
 	<left>
 		<VBox>
 			<children>
+				<Button fx:id="btnAllOrders">Commandes</Button>
 				<Label text="Table" />
 				<ComboBox fx:id="cmbTables" />
 				<TableView id="masterContactTable" fx:id="sldProdTbl" AnchorPane.bottomAnchor="0.0"
@@ -49,10 +50,16 @@
 				</HBox>
 				
 				<Region VBox.vgrow="ALWAYS" />
+				<Label fx:id="status" />
 				<HBox>
-					<Label style="-fx-font-weight:bold" text="Total:" />
-					<Region HBox.hgrow="ALWAYS" />
-					<Label style="-fx-font-weight:bold" fx:id="totalPriceLbl" text="0 MGA" />
+					<children>
+						<Label style="-fx-font-weight:bold" text="Total:" />
+						<Region HBox.hgrow="ALWAYS" />
+						<Label style="-fx-font-weight:bold" fx:id="totalPriceLbl" text="0 MGA" />
+					</children>
+					<padding>
+						<Insets top="10" left="0" right="0" bottom="10"/>
+					</padding>
 				</HBox>
 				<VBox>
 					<FlowPane style="-fx-background-color: #808080;" alignment="bottom_left">

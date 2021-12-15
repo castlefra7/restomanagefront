@@ -38,7 +38,7 @@ public class ProductOrderCtl implements Initializable {
 	
 	public void syncTxtOrderDetailsTotal() {
 		if(this.model.getProducOrdertSelected() != null) {
-			this.txtOrderDetailsTotal.setText(NumberFormat.getInstance().format(this.model.getProducOrdertSelected().get().getTotal()));
+			this.txtOrderDetailsTotal.setText(NumberFormat.getInstance().format(this.model.getProducOrdertSelected().get().getTotal()) + " Ar");
 		}
 	}
 	

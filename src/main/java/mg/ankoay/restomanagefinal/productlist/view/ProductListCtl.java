@@ -5,13 +5,18 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import mg.ankoay.restomanagefinal.commons.model.Product;
 import mg.ankoay.restomanagefinal.commons.model.Table;
 import mg.ankoay.restomanagefinal.productlist.model.ProductListModel;
@@ -37,6 +42,10 @@ public class ProductListCtl implements Initializable {
 	Button orderBtn;
 	@FXML
 	ComboBox<Table> cmbTables;
+	@FXML
+	Label status;
+	@FXML
+	Button btnAllOrders;
 
 // Center Pane	
 	@FXML
@@ -53,6 +62,8 @@ public class ProductListCtl implements Initializable {
 		this.qtyTxt.setEditable(false);
 		
 		this.cmbTables.setItems(this.model.getTableList());
+		this.status.setBackground(new Background(new BackgroundFill(Color.rgb(3, 173, 129, 1), new CornerRadii(5.0), new Insets(-5.0))));
+		this.status.setText("");
 		
 		bindFieldsToModel();
 	}

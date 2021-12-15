@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Locale;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.util.Duration;
 import mg.ankoay.restomanagefinal.commons.model.Category;
 import mg.ankoay.restomanagefinal.commons.model.Product;
 import mg.ankoay.restomanagefinal.commons.model.Table;
@@ -24,6 +27,7 @@ import mg.ankoay.restomanagefinal.productorders.view.ProductOrderPresenter;
 public class ProductListPresenter extends Presenter {
 	private final ProductListModel model;
 	private final ProductListCtl view;
+	private Timeline wonder;
 
 	public ProductListPresenter(ProductListCtl _productListCtl, Scene _parent) {
 		this.model = ProductListModel.getInstance();
@@ -75,7 +79,25 @@ public class ProductListPresenter extends Presenter {
 
 		this.view.orderBtn.setOnAction(e -> {
 			try {
-				showProductOrder();
+// Checking can open new scene
+				if (this.model.getProductSltList().size() < 1 || this.model.getTableSelected().getValue() == null)
+					return;
+// Adding new items
+				ProductOrder prdOrd = new ProductOrder();
+				prdOrd.setTable(this.model.getTableSelected().getValue());
+				prdOrd.setDate(new Timestamp((new Date()).getTime()));
+				for (Product product : this.model.getProductSltList()) {
+					prdOrd.getProducts().add(new Product(product.getId(), product.getName(), product.getPrice(),
+							product.getIdCategory(), product.getQuantity()));
+					product.reset();
+				}
+				//TODO: ProductOrderModel.getInstance().getProductOrders().add(prdOrd); // this line is no longer needed
+// Send to DB				
+				prdOrd.sendToDB();
+// Clean selected products
+				this.model.getProductSltList().clear();
+// Show status				
+				tempStatus();
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -85,6 +107,10 @@ public class ProductListPresenter extends Presenter {
 		this.view.cmbTables.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
 			Table selectedTable = newVal;
 			this.model.getTableSelected().setValue(selectedTable);
+		});
+
+		this.view.btnAllOrders.setOnAction(event -> {
+			showProductOrder();
 		});
 	}
 
@@ -128,34 +154,38 @@ public class ProductListPresenter extends Presenter {
 	}
 
 // LEFT PANE METHODS
-	private void showProductOrder() throws Exception {
-// Checking can open new scene
-		if (this.model.getProductSltList().size() < 1 || this.model.getTableSelected().getValue() == null)
-			return;
-// Adding new items
-		ProductOrder prdOrd = new ProductOrder();
-		prdOrd.setTable(this.model.getTableSelected().getValue());
-		prdOrd.setDate(new Timestamp((new Date()).getTime()));
-		for (Product product : this.model.getProductSltList()) {
-			prdOrd.getProducts().add(new Product(product.getId(), product.getName(), product.getPrice(),
-					product.getIdCategory(), product.getQuantity()));
-			product.reset();
+	private void tempStatus() {
+		view.status.setText("Succès");
+		wonder = new Timeline(new KeyFrame(Duration.seconds(3), new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				view.status.setText("");
+				wonder.stop();
+			}
+		}));
+		// wonder.setCycleCount(Timeline.INDEFINITE);
+		wonder.play();
+	}
+
+	private void showProductOrder() {
+// Open Scene		 
+		try {
+			ProductOrderModel.getInstance().loadData();
+			FXMLLoader prdOrder = new FXMLLoader(
+					getClass().getResource("/mg/ankoay/restomanagefinal/productorders/view/ProductOrder.fxml"));
+			Parent root = prdOrder.load();
+			ProductOrderCtl prdCtl = prdOrder.getController();
+
+			Scene scene = new Scene(root);
+			ProductOrderPresenter prdOrdPres = new ProductOrderPresenter(prdCtl, scene, this.getScene());
+			prdOrdPres.setPrimaryStage(this.getPrimaryStage());
+
+			this.getPrimaryStage().setScene(scene);
+			this.getPrimaryStage().setFullScreen(true);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		ProductOrderModel.getInstance().getProductOrders().add(prdOrd);
-// Open Scene		
-		FXMLLoader prdOrder = new FXMLLoader(
-				getClass().getResource("/mg/ankoay/restomanagefinal/productorders/view/ProductOrder.fxml"));
-		Parent root = prdOrder.load();
-		ProductOrderCtl prdCtl = prdOrder.getController();
-
-		Scene scene = new Scene(root);
-		ProductOrderPresenter prdOrdPres = new ProductOrderPresenter(prdCtl, scene, this.getScene());
-		prdOrdPres.setPrimaryStage(this.getPrimaryStage());
-
-		this.getPrimaryStage().setScene(scene);
-		this.getPrimaryStage().setFullScreen(true);
-// Clean selected products
-		this.model.getProductSltList().clear();
 	}
 
 // CENTER PANE METHODS

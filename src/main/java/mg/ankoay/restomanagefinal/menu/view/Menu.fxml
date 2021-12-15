@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<BorderPane fx:controller="mg.ankoay.restomanagefinal.menu.view.MenuCtl" xmlns:fx="http://javafx.com/fxml">
+	<center>
+		<HBox>
+			<Button fx:id="btnjourneyBegin" text="Ouverture caisse" />
+			<Button fx:id="btnPOS" text="Caisse enregistreuse" />
+		</HBox>
+	</center>
+	<padding>
+		<Insets top="10" left="10" right="10" bottom="10"/>
+	</padding>
+</BorderPane>

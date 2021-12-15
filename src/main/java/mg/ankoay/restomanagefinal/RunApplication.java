@@ -5,9 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import mg.ankoay.restomanagefinal.productlist.model.ProductListModel;
-import mg.ankoay.restomanagefinal.productlist.view.ProductListCtl;
-import mg.ankoay.restomanagefinal.productlist.view.ProductListPresenter;
+import mg.ankoay.restomanagefinal.login.view.LoginCtl;
+import mg.ankoay.restomanagefinal.login.view.LoginPresenter;
 
 public class RunApplication extends Application {
 	protected static int counter = 0;
@@ -19,21 +18,19 @@ public class RunApplication extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("POS Restaurant");
-		ProductListModel.getInstance().loadData();
-
-		FXMLLoader prdList = new FXMLLoader(
-				getClass().getResource("/mg/ankoay/restomanagefinal/productlist/view/ProductList.fxml"));
-		Parent root = prdList.load();
-		ProductListCtl productListCtl = prdList.getController();
+		
+		FXMLLoader login = new FXMLLoader(
+				getClass().getResource("/mg/ankoay/restomanagefinal/login/view/Login.fxml"));
+		Parent root = login.load();
+		LoginCtl loginCtl = login.getController();
 
 		Scene scene = new Scene(root);
 
-		ProductListPresenter productListPres = new ProductListPresenter(productListCtl, scene);
-		productListPres.setPrimaryStage(primaryStage);
+		LoginPresenter loginPres = new LoginPresenter(loginCtl, scene);
+		loginPres.setPrimaryStage(primaryStage);
 
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		primaryStage.setFullScreen(true);
 		primaryStage.setFullScreenExitHint("");
 	}
 }
