@@ -2,11 +2,16 @@ package mg.ankoay.restomanagefinal;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import mg.ankoay.restomanagefinal.login.view.LoginCtl;
 import mg.ankoay.restomanagefinal.login.view.LoginPresenter;
+import mg.ankoay.restomanagefinal.productorders.model.ProductOrderModel;
+import mg.ankoay.restomanagefinal.productorders.view.ProductOrderCtl;
+import mg.ankoay.restomanagefinal.productorders.view.ProductOrderPresenter;
 
 public class RunApplication extends Application {
 	protected static int counter = 0;
@@ -23,22 +28,35 @@ public class RunApplication extends Application {
 				getClass().getResource("/mg/ankoay/restomanagefinal/login/view/Login.fxml"));
 		Parent root = login.load();
 		LoginCtl loginCtl = login.getController();
-
-		Scene scene = new Scene(root);
+		
+		Screen screen = Screen.getPrimary();
+		Rectangle2D bounds = screen.getVisualBounds();
+		Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight() - 32);
 
 		LoginPresenter loginPres = new LoginPresenter(loginCtl, scene);
 		loginPres.setPrimaryStage(primaryStage);
 
+		/*ProductOrderModel.getInstance().loadData();
+		FXMLLoader prdOrder = new FXMLLoader(
+				getClass().getResource("/mg/ankoay/restomanagefinal/productorders/view/ProductOrder.fxml"));
+		Parent root = prdOrder.load();
+		ProductOrderCtl prdCtl = prdOrder.getController();
+
+		Screen screen = Screen.getPrimary();
+		Rectangle2D bounds = screen.getVisualBounds();
+
+		Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight() - 32);
+		
+		ProductOrderPresenter prdOrdPres = new ProductOrderPresenter(prdCtl, scene, null);
+		prdOrdPres.setPrimaryStage(primaryStage);*/
+		
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		primaryStage.setFullScreenExitHint("");
 	}
 }
-
-//Screen screen = Screen.getPrimary();
-//Rectangle2D bounds = screen.getVisualBounds();
-//Scene scene = new Scene(root, bounds.getWidth() - 100, bounds.getHeight()
-//-100);
+//
+//
+//Scene scene = new Scene(root, bounds.getWidth() - 100, bounds.getHeight()-100);
 //protected Stage lastOpenStage;
 //this.lastOpenStage = primaryStage;
 //Button openButton = new Button("Open");

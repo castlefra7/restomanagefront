@@ -20,8 +20,7 @@ public class ProductOrderPresenter extends Presenter {
 	
 	public void attachEvents() {
 		this.view.btnBack.setOnAction(e -> {
-			this.getPrimaryStage().setScene(this.scenePrdList);	
-			this.getPrimaryStage().setFullScreen(true);
+			this.getPrimaryStage().setScene(this.scenePrdList);
 		});
 		
 		this.view.tblOrders.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {

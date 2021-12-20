@@ -1,0 +1,8 @@
+#lblTitle {
+    -fx-underline: true;
+    -fx-text-fill: white;
+}
+
+.root {
+	-fx-background-color: teal;
+}

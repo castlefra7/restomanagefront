@@ -44,6 +44,7 @@ public class ProductOrderCtl implements Initializable {
 	
 	public void conf() {
 		this.txtOrderDetailsTotal.setEditable(false);
+		this.txtOrderDetailsDt.setEditable(false);
 		this.txtOrderDetailsTable.setEditable(false);
 	}
 	

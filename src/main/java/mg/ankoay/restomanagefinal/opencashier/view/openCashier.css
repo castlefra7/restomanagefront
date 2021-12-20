@@ -1,0 +1,24 @@
+.v-box {
+ 	-fx-stroke: green;
+ 	-fx-stroke-width: 5;
+    -fx-stroke-dash-array: 12 2 4 2;
+    -fx-stroke-dash-offset: 6;
+    -fx-stroke-line-cap: butt;
+}
+
+.root {
+	-fx-background-color: teal;
+}
+
+.button {
+	-fx-background-color: black;
+	-fx-text-fill: white;
+}
+
+#btnBack {
+	-fx-padding: 10 10 10 10;
+}
+
+#lblTitle {
+    -fx-underline: true;
+}

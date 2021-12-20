@@ -4,17 +4,39 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import java.net.URL?>
+<?import javafx.scene.text.Font?>
+
 <BorderPane fx:controller="mg.ankoay.restomanagefinal.login.view.LoginCtl" xmlns:fx="http://javafx.com/fxml">
+	<left>
+	</left>
 	<center>
-		<VBox>
-			<Label text="Nom utilisateur" />
-			<TextField fx:id="txtUsername" />
-			<Label text="Mot de passe" />
-			<TextField fx:id="txtPassword" />
-			<Button fx:id="btnLogin" text="Se connecter" />
-		</VBox>
+		<GridPane maxWidth="500.0" hgap="7.0" vgap="7.0">
+			<children>
+				<Label fx:id="lblTitle" text="Connexion caisse" GridPane.columnIndex="1" GridPane.rowIndex="1">
+					<font>
+						<Font name="Arial Bold" size="24.0" />
+					</font>
+					<padding>
+						<Insets top="0" left="0" right="0" bottom="17"/>
+					</padding>
+				</Label>
+				<Label text="Nom utilisateur" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				<TextField prefWidth="250.0" fx:id="txtUsername" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+				<Label text="Mot de passe" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+				<TextField fx:id="txtPassword" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+				<HBox alignment="BOTTOM_RIGHT"  GridPane.columnIndex="2" GridPane.rowIndex="5" >
+					<children>
+						<Button fx:id="btnLogin" text="Se connecter"/>
+					</children>
+				</HBox>
+			</children>
+		</GridPane>
 	</center>
 	<padding>
-		<Insets top="10" left="10" right="10" bottom="10"/>
+		<Insets top="250" left="10" right="10" bottom="10"/>
 	</padding>
+	<stylesheets>
+    	<URL value="@login.css" />
+	</stylesheets>
 </BorderPane>

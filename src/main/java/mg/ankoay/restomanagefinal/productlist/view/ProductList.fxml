@@ -4,15 +4,20 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import java.net.URL?>
+
 <BorderPane fx:controller="mg.ankoay.restomanagefinal.productlist.view.ProductListCtl" xmlns:fx="http://javafx.com/fxml">
+	<top>
+		<fx:include source="../../topmenu/view/TopMenu.fxml" />
+	</top>
 	<left>
-		<VBox>
+		<VBox fillWidth="true">
 			<children>
-				<Button fx:id="btnAllOrders">Commandes</Button>
-				<Label text="Table" />
+				<Button styleClass="btnCustom" fx:id="btnAllOrders">Commandes</Button>
+				<Label styleClass="lblSubtitle" text="Table" />
 				<ComboBox fx:id="cmbTables" />
-				<TableView id="masterContactTable" fx:id="sldProdTbl" AnchorPane.bottomAnchor="0.0"
-							   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+				<TableView id="masterContactTable" fx:id="sldProdTbl" AnchorPane.bottomAnchor="0.0" 
+				AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 					<columns>
 						<TableColumn prefWidth="150.0" text="Produit">
 							<cellValueFactory>
@@ -40,37 +45,39 @@
 					</columnResizePolicy>
 				</TableView>
 				<HBox>
-					<Button fx:id="decQtyBtn" text="-" />
-					<TextField fx:id="qtyTxt" />
-					<Button fx:id="incQtyBtn" text="+" />
-					<Label fx:id="prodNameLbl" />
+					<children>
+						<Button prefWidth="100.0" styleClass="btnCustom" fx:id="decQtyBtn" text="-" />
+						<TextField  alignment="CENTER" prefWidth="50.0" fx:id="qtyTxt" />
+						<Button prefWidth="100.0" styleClass="btnCustom" fx:id="incQtyBtn" text="+" />
+						<Label fx:id="prodNameLbl">
+							<padding>
+								<Insets top="0" left="10" right="0" bottom="0"/>
+							</padding>
+						</Label>
+					</children>
 					<padding>
 						<Insets top="10" left="0" right="10" bottom="10"/>
 					</padding>
 				</HBox>
-				
 				<Region VBox.vgrow="ALWAYS" />
 				<Label fx:id="status" />
 				<HBox>
 					<children>
 						<Label style="-fx-font-weight:bold" text="Total:" />
 						<Region HBox.hgrow="ALWAYS" />
-						<Label style="-fx-font-weight:bold" fx:id="totalPriceLbl" text="0 MGA" />
+						<Label fx:id="totalPriceLbl" text="0 MGA" />
 					</children>
 					<padding>
 						<Insets top="10" left="0" right="0" bottom="10"/>
 					</padding>
+				</HBox>					
+				<HBox spacing="7">
+					<children>
+						<Button styleClass="btnCustom" maxWidth="Infinity" HBox.hgrow="ALWAYS" fx:id="orderBtn" text="Commander" />
+						<Button styleClass="btnCustom" maxWidth="Infinity" HBox.hgrow="ALWAYS" text="Payer" />
+						<Button styleClass="btnCustom" maxWidth="Infinity" HBox.hgrow="ALWAYS"  text="En attente" />
+					</children>
 				</HBox>
-				<VBox>
-					<FlowPane style="-fx-background-color: #808080;" alignment="bottom_left">
-						<Button fx:id="orderBtn" text="Commander" />
-						<Button text="Payer" />
-						<Button text="En attente" />
-					</FlowPane>
-					<padding>
-						<Insets top="10" left="0" right="0" bottom="10"/>
-					</padding>
-				</VBox>
 			</children>		
 			<padding>
 				<Insets top="10" left="10" right="10" bottom="10"/>
@@ -79,10 +86,15 @@
 	</left>
 	<center>
 		<VBox>
-			<Label text="Categories" />
+			<Button  styleClass="btnCustom"  text="Retour vers menu" fx:id="btnBack" />
+			<HBox>
+				<children>
+					<Label styleClass="lblSubtitle"  HBox.hgrow="ALWAYS" text="Categories" />
+				</children>
+			</HBox>
 			<FlowPane fx:id="categories" />
-			<Label text="Produits" />
-			<ScrollPane fitToHeight="true" fitToWidth="true">
+			<Label styleClass="lblSubtitle" text="Produits" />
+			<ScrollPane VBox.vgrow="ALWAYS" fitToHeight="true" fitToWidth="true">
 				<FlowPane fx:id="products" />
 			</ScrollPane>
 			<padding>
@@ -90,4 +102,7 @@
 			</padding>
 		</VBox>
 	</center>
+	<stylesheets>
+    	<URL value="@productlist.css" />
+	</stylesheets>
 </BorderPane>

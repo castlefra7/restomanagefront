@@ -46,10 +46,14 @@ public class ProductListCtl implements Initializable {
 	Label status;
 	@FXML
 	Button btnAllOrders;
+	
 
 // Center Pane	
 	@FXML
 	FlowPane categories;
+	
+	@FXML
+	Button btnBack;
 
 	@FXML
 	FlowPane products;
@@ -62,7 +66,6 @@ public class ProductListCtl implements Initializable {
 		this.qtyTxt.setEditable(false);
 		
 		this.cmbTables.setItems(this.model.getTableList());
-		this.status.setBackground(new Background(new BackgroundFill(Color.rgb(3, 173, 129, 1), new CornerRadii(5.0), new Insets(-5.0))));
 		this.status.setText("");
 		
 		bindFieldsToModel();

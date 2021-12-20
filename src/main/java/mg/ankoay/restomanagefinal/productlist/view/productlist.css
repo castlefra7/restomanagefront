@@ -1,0 +1,27 @@
+
+.root {
+	-fx-background-color: teal;
+}
+
+.lblSubtitle {
+	-fx-text-fill: white;
+	-fx-font-size: 22px;
+	-fx-font-weight: 900;
+}
+
+#totalPriceLbl {
+	-fx-text-fill: yellow;
+	-fx-font-size: 24px;
+	-fx-font-weight: 900;
+}
+
+#prodNameLbl {
+	-fx-text-fill: white;
+	-fx-font-size: 20px;
+	-fx-font-weight: 900;
+}
+
+.btnCustom {
+	-fx-background-color: black;
+	-fx-text-fill: white;
+}

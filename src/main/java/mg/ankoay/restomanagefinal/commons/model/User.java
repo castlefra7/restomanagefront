@@ -12,8 +12,10 @@ public class User {
 	private static final User INSTANCE = new User();
 
 	public boolean login() throws Exception {
-		boolean result = false;
-// TODO: Connect to database		
+		boolean result = true;
+// TODO: Connect to database
+		User connectedUser = User.getInstance();
+		connectedUser.setId("1");
 
 		return result;
 	}

@@ -1,0 +1,23 @@
+.v-box {
+	-fx-background-color: teal;
+}
+
+.container-pane {
+	-fx-background-color: teal;
+}
+
+.lblField {
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+}
+
+.lblSubtitle {
+	-fx-text-fill: white;
+	-fx-font-weight: 900;
+	-fx-font-size: 24px;
+}
+
+.button {
+	-fx-background-color: black;
+	-fx-text-fill: white;
+}

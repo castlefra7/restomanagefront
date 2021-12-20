@@ -10,9 +10,11 @@ import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.stage.Screen;
 import javafx.util.Duration;
 import mg.ankoay.restomanagefinal.commons.model.Category;
 import mg.ankoay.restomanagefinal.commons.model.Product;
@@ -28,11 +30,13 @@ public class ProductListPresenter extends Presenter {
 	private final ProductListModel model;
 	private final ProductListCtl view;
 	private Timeline wonder;
+	private Scene sceneMenu;
 
-	public ProductListPresenter(ProductListCtl _productListCtl, Scene _parent) {
+	public ProductListPresenter(ProductListCtl _productListCtl, Scene _parent,  Scene _sceneMenu) {
 		this.model = ProductListModel.getInstance();
 		this.view = _productListCtl;
 		this.scene = _parent;
+		this.sceneMenu = _sceneMenu;
 		this.attachEvents();
 	}
 
@@ -43,6 +47,10 @@ public class ProductListPresenter extends Presenter {
 
 	public void leftEvent() {
 		this.view.totalPriceLbl.textProperty().bind(this.model.getTotalPrice().asString(Locale.FRENCH, "%,.2f MGA"));
+		
+		this.view.btnBack.setOnAction(event -> {
+			this.getPrimaryStage().setScene(this.sceneMenu);
+		});
 
 		this.view.sldProdTbl.getSelectionModel().selectedItemProperty().addListener((obs, oldSelect, newSelect) -> {
 			Product selectedValue = newSelect;
@@ -177,12 +185,15 @@ public class ProductListPresenter extends Presenter {
 			Parent root = prdOrder.load();
 			ProductOrderCtl prdCtl = prdOrder.getController();
 
-			Scene scene = new Scene(root);
+			Screen screen = Screen.getPrimary();
+			Rectangle2D bounds = screen.getVisualBounds();
+
+			Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight() - 32);
+			
 			ProductOrderPresenter prdOrdPres = new ProductOrderPresenter(prdCtl, scene, this.getScene());
 			prdOrdPres.setPrimaryStage(this.getPrimaryStage());
 
 			this.getPrimaryStage().setScene(scene);
-			this.getPrimaryStage().setFullScreen(true);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

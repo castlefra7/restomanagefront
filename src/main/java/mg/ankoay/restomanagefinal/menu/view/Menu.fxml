@@ -4,14 +4,33 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import java.net.URL?>
+<?import javafx.scene.text.Font?>
+
 <BorderPane fx:controller="mg.ankoay.restomanagefinal.menu.view.MenuCtl" xmlns:fx="http://javafx.com/fxml">
+	<top>
+		<fx:include source="../../topmenu/view/TopMenu.fxml" />
+	</top>
 	<center>
-		<HBox>
-			<Button fx:id="btnjourneyBegin" text="Ouverture caisse" />
-			<Button fx:id="btnPOS" text="Caisse enregistreuse" />
-		</HBox>
+		<GridPane maxWidth="500.0" hgap="7.0" vgap="7.0">
+			<children>
+				<Label fx:id="lblTitle" text="Menu" GridPane.columnIndex="1" GridPane.rowIndex="1">
+					<font>
+						<Font name="Arial Bold" size="24.0" />
+					</font>
+					<padding>
+						<Insets top="0" left="0" right="0" bottom="17"/>
+					</padding>
+				</Label>
+				<Button minHeight="150" minWidth="300" fx:id="btnjourneyBegin" text="Ouverture caisse" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				<Button minHeight="150" minWidth="300" fx:id="btnPOS" text="Caisse enregistreuse" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+			</children>
+			<padding>
+				<Insets top="250" />
+			</padding>
+		</GridPane>
 	</center>
-	<padding>
-		<Insets top="10" left="10" right="10" bottom="10"/>
-	</padding>
+	<stylesheets>
+    	<URL value="@menu.css" />
+	</stylesheets>
 </BorderPane>

@@ -22,7 +22,7 @@ import mg.ankoay.restomanagefinal.productorders.attributes.OrderAttr;
 import mg.ankoay.restomanagefinal.productorders.attributes.OrderDetailAttr;
 
 public class ProductOrder {
-	private String URL = "http://localhost:8080/api/back";
+	private String URL = "http://192.168.88.80:8080/api/back";
 
 	private ObservableList<Product> products = FXCollections
 			.observableArrayList(product -> new Observable[] { product.quantityProperty() });

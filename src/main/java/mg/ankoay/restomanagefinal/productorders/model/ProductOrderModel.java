@@ -18,7 +18,7 @@ import mg.ankoay.restomanagefinal.productorders.attributes.OrderAttr;
 import mg.ankoay.restomanagefinal.productorders.attributes.OrderDetailAttr;
 
 public class ProductOrderModel {
-	private String URL = "http://localhost:8080/api/back";
+	private String URL = "http://192.168.88.80:8080/api/back";
 	
 	private ObservableList<ProductOrder> productOrders = FXCollections.observableArrayList();
 	private ObjectProperty<ProductOrder> productOrderSelected = new SimpleObjectProperty<>();
@@ -62,7 +62,7 @@ public class ProductOrderModel {
 				this.getProductOrders().add(prdOrd);
 			}
 		} catch (Exception ex) {
-			//ex.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 

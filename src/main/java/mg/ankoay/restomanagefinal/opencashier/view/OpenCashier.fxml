@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import java.net.URL?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:controller="mg.ankoay.restomanagefinal.opencashier.view.OpenCashierCtl" xmlns:fx="http://javafx.com/fxml">
+	<top>
+		<fx:include source="../../topmenu/view/TopMenu.fxml" />
+	</top>	
+	<center>
+		<AnchorPane>
+			<children>
+				<VBox  maxWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" >
+					<children>
+						<Button fx:id="btnBack" text="Retour" />
+						<GridPane  alignment="CENTER" hgap="7.0" vgap="7.0">
+							<children>
+								<Label fx:id="lblTitle" text="Fonds de caisse" GridPane.columnIndex="1" GridPane.rowIndex="1">
+									<font>
+										<Font name="Arial Bold" size="24.0" />
+									</font>
+									<padding>
+										<Insets top="0" left="0" right="0" bottom="17"/>
+									</padding>
+								</Label>
+								
+								<Label text="Date" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+								<TextField prefWidth="250.0" fx:id="txtDate" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+								<Label text="Fond" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+								<TextField prefWidth="250.0" fx:id="txtFund" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+								<Button fx:id="btnValidate" text="Valider" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+							</children>
+						</GridPane>
+					</children>
+					<padding>
+						<Insets top="10" left="10" right="0" bottom="10" />
+					</padding>
+				</VBox>
+			</children>
+		</AnchorPane>
+	</center>
+	<stylesheets>
+    	<URL value="@openCashier.css" />
+	</stylesheets>
+</BorderPane>
