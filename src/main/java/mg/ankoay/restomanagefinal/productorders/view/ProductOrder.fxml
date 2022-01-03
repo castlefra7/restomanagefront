@@ -21,9 +21,9 @@
 		                    		<Button fx:id="btnBack">Retour</Button>
 		                    		<Label styleClass="lblDate" fx:id="lblDate" />
 		                    		<Label styleClass="lblSubtitle" text="Commandes non payées" />
-			                    	<TableView fx:id="tblOrders">
+			                    	<TableView fx:id="tblOrdersUnpaid">
 			                            <columns>
-			                                <TableColumn text="Date">
+			                                <TableColumn text="Date commande">
 			                                    <cellValueFactory>
 			                                        <PropertyValueFactory property="date" />
 			                                    </cellValueFactory>
@@ -46,7 +46,12 @@
 			                        <Label styleClass="lblSubtitle" text="Commandes payées" />
 			                        <TableView fx:id="tblOrdersPaid">
 			                            <columns>
-			                                <TableColumn text="Date">
+			                             	<TableColumn text="Date paiement">
+			                                    <cellValueFactory>
+			                                        <PropertyValueFactory property="datePayment" />
+			                                    </cellValueFactory>
+			                                </TableColumn>
+			                                <TableColumn text="Date commande">
 			                                    <cellValueFactory>
 			                                        <PropertyValueFactory property="date" />
 			                                    </cellValueFactory>
@@ -119,6 +124,7 @@
 											<HBox alignment="bottom_left" spacing="7">
 												<children>
 													<Button fx:id="btnPay" text="Payer" />
+													<Button fx:id="btnUpdate" text="Mettre à jour" />
 													<Button text="Imprimer" />
 												</children>
 												<padding>

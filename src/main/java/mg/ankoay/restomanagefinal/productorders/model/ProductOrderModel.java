@@ -71,8 +71,10 @@ public class ProductOrderModel {
 		
 		for (OrderAttr order : src) {
 			ProductOrder prdOrd = new ProductOrder();
+			prdOrd.setDatePayment(order.getDate_payment());
 			prdOrd.setId_order(order.getId_order());
-			prdOrd.setTable(new Table(String.valueOf(order.getId_table()), order.getTable().getName()));
+			
+			prdOrd.setTable(new Table(String.valueOf(order.getTable().getId()), order.getTable().getName()));
 			prdOrd.setDate(order.getDate_order());
 
 			for (OrderDetailAttr ordDetAttr : order.getOrderDetails()) {

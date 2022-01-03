@@ -13,7 +13,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Screen;
 import javafx.util.Duration;
 import mg.ankoay.restomanagefinal.commons.model.Category;
@@ -46,6 +48,34 @@ public class ProductListPresenter extends Presenter {
 	}
 
 	public void leftEvent() {
+		
+		this.model.isUpdateProperty().addListener((obs, oldVal, newVal) -> {
+			if(newVal) {
+				this.view.btnUpdateOrder.setVisible(true);
+				this.view.btnPay.setVisible(false);
+				this.view.btnOrder.setVisible(false);
+				this.view.btnUpdateOrder.setOnAction(event -> {
+					try {
+						this.model.updateOrder();
+						this.showProductOrder();
+					} catch(Exception ex) {
+						ex.printStackTrace();
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("Erreur de connexion");
+						alert.setHeaderText(ex.getMessage());
+						alert.showAndWait();
+					}
+					
+				});
+			} else {
+				this.view.btnUpdateOrder.setVisible(false);
+				this.view.btnPay.setVisible(true);
+				this.view.btnOrder.setVisible(true);
+			}
+			
+		});
+
+		
 		this.view.totalPriceLbl.textProperty().bind(this.model.getTotalPrice().asString(Locale.FRENCH, "%,.2f MGA"));
 		
 		this.view.btnBack.setOnAction(event -> {
@@ -85,7 +115,7 @@ public class ProductListPresenter extends Presenter {
 			}
 		});
 
-		this.view.orderBtn.setOnAction(e -> {
+		this.view.btnOrder.setOnAction(e -> {
 			try {
 // Checking can open new scene
 				if (this.model.getProductSltList().size() < 1 || this.model.getTableSelected().getValue() == null)
@@ -109,7 +139,6 @@ public class ProductListPresenter extends Presenter {
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
-
 		});
 
 		this.view.cmbTables.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -163,12 +192,14 @@ public class ProductListPresenter extends Presenter {
 
 // LEFT PANE METHODS
 	private void tempStatus() {
+		view.status.setStyle("-fx-padding: 7px;");
 		view.status.setText("Succès");
 		wonder = new Timeline(new KeyFrame(Duration.seconds(3), new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				view.status.setText("");
+				view.status.setStyle("-fx-padding: 0px;");
 				wonder.stop();
 			}
 		}));

@@ -21,7 +21,7 @@ public class ProductOrderCtl implements Initializable {
 	@FXML
 	Button btnBack;
 	@FXML
-	TableView<ProductOrder> tblOrders;
+	TableView<ProductOrder> tblOrdersUnpaid;
 	@FXML
 	TableView<Product> tblOrderDetails;
 	@FXML
@@ -32,6 +32,9 @@ public class ProductOrderCtl implements Initializable {
 	TextField txtOrderDetailsTable;
 	@FXML
 	Button btnPay;
+	@FXML
+	Button btnUpdate;
+	
 	@FXML
 	Label lblDate;
 	@FXML
@@ -51,8 +54,10 @@ public class ProductOrderCtl implements Initializable {
 	}
 	
 	public void syncTxtOrderDetailsTotal() {
-		if(this.model.getProducOrdertSelected() != null) {
+		if(this.model.getProducOrdertSelected().get() != null) {
 			this.txtOrderDetailsTotal.setText(NumberFormat.getInstance().format(this.model.getProducOrdertSelected().get().getTotal()) + " Ar");
+		} else {
+			this.txtOrderDetailsTotal.setText(NumberFormat.getInstance().format(0) + " Ar");
 		}
 	}
 	
@@ -63,7 +68,7 @@ public class ProductOrderCtl implements Initializable {
 	}
 	
 	public void bindFieldsToModel() {
-		this.tblOrders.setItems(this.model.getProductOrders());
+		this.tblOrdersUnpaid.setItems(this.model.getProductOrders());
 		this.tblOrdersPaid.setItems(this.model.getProductOrdersPaid());
 	}
 

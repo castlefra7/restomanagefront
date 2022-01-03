@@ -24,7 +24,7 @@
 				<Label text="Nom utilisateur" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 				<TextField prefWidth="250.0" fx:id="txtUsername" GridPane.columnIndex="2" GridPane.rowIndex="2" />
 				<Label text="Mot de passe" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-				<TextField fx:id="txtPassword" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+				<PasswordField fx:id="txtPassword" GridPane.columnIndex="2" GridPane.rowIndex="4" />
 				<HBox alignment="BOTTOM_RIGHT"  GridPane.columnIndex="2" GridPane.rowIndex="5" >
 					<children>
 						<Button fx:id="btnLogin" text="Se connecter"/>

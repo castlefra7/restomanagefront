@@ -7,10 +7,27 @@ import mg.ankoay.restomanagefinal.commons.attributes.TableAttr;
 
 public class OrderAttr {
 	private Integer id_order;
-	private Integer id_table;
+	private Integer id_user;
 	private Set<OrderDetailAttr> orderDetails;
 	private Timestamp date_order;
 	private TableAttr table;
+	private Timestamp date_payment;
+
+	public Integer getId_user() {
+		return id_user;
+	}
+
+	public void setId_user(Integer id_user) {
+		this.id_user = id_user;
+	}
+
+	public Timestamp getDate_payment() {
+		return date_payment;
+	}
+
+	public void setDate_payment(Timestamp date_payment) {
+		this.date_payment = date_payment;
+	}
 
 	public Integer getId_order() {
 		return id_order;
@@ -42,14 +59,6 @@ public class OrderAttr {
 
 	public void setOrderDetails(Set<OrderDetailAttr> orderDetails) {
 		this.orderDetails = orderDetails;
-	}
-
-	public Integer getId_table() {
-		return id_table;
-	}
-
-	public void setId_table(Integer id_table) {
-		this.id_table = id_table;
 	}
 
 }

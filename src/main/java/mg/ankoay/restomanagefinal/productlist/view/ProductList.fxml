@@ -73,9 +73,9 @@
 				</HBox>					
 				<HBox spacing="7">
 					<children>
-						<Button styleClass="btnCustom" maxWidth="Infinity" HBox.hgrow="ALWAYS" fx:id="orderBtn" text="Commander" />
-						<Button styleClass="btnCustom" maxWidth="Infinity" HBox.hgrow="ALWAYS" text="Payer" />
-						<Button styleClass="btnCustom" maxWidth="Infinity" HBox.hgrow="ALWAYS"  text="En attente" />
+						<Button styleClass="btnCustom" maxWidth="Infinity" HBox.hgrow="ALWAYS" fx:id="btnOrder" text="Commander" />
+						<Button styleClass="btnCustom" maxWidth="Infinity" HBox.hgrow="ALWAYS" fx:id="btnPay" text="Payer" />
+						<Button styleClass="btnCustom" maxWidth="Infinity" HBox.hgrow="ALWAYS" fx:id="btnUpdateOrder" text="Mettre à jour" />
 					</children>
 				</HBox>
 			</children>		

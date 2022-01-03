@@ -39,13 +39,17 @@ public class ProductListCtl implements Initializable {
 	@FXML
 	Label totalPriceLbl;
 	@FXML
-	Button orderBtn;
+	Button btnOrder;
+	@FXML
+	Button btnPay;
 	@FXML
 	ComboBox<Table> cmbTables;
 	@FXML
 	Label status;
 	@FXML
 	Button btnAllOrders;
+	@FXML
+	Button btnUpdateOrder;
 	
 
 // Center Pane	
@@ -65,14 +69,21 @@ public class ProductListCtl implements Initializable {
 		this.model = ProductListModel.getInstance();
 		this.qtyTxt.setEditable(false);
 		
+		this.btnUpdateOrder.setVisible(false);
+		
 		this.cmbTables.setItems(this.model.getTableList());
 		this.status.setText("");
 		
 		bindFieldsToModel();
+		
 	}
 
 	public void bindFieldsToModel() {
 		this.sldProdTbl.setItems(this.model.getProductSltList());
+		
+		this.model.getTableSelected().addListener((obs, oldVal, newVal) -> {
+			this.cmbTables.getSelectionModel().select(newVal);
+		});
 	}
 
 }

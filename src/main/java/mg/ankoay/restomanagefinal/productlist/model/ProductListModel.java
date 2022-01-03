@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 
 import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -24,6 +25,8 @@ import mg.ankoay.restomanagefinal.commons.model.Product;
 import mg.ankoay.restomanagefinal.commons.model.Table;
 import mg.ankoay.restomanagefinal.commons.utils.ResponseBody;
 import mg.ankoay.restomanagefinal.commons.utils.Utils;
+import mg.ankoay.restomanagefinal.productorders.attributes.OrderAttr;
+import mg.ankoay.restomanagefinal.productorders.model.ProductOrder;
 
 public class ProductListModel {
 	private String URL = "http://localhost:8080/api/back";
@@ -45,9 +48,13 @@ public class ProductListModel {
 
 	private static final ProductListModel INSTANCE = new ProductListModel();
 
+	private ProductOrder prdOrder;
+	private final SimpleBooleanProperty isUpdate = new SimpleBooleanProperty();
+
 	public ProductListModel() {
 		attachListeners();
 	}
+	
 
 	public void attachListeners() {
 		ListChangeListener<Product> sltListProdListener = new ListChangeListener<Product>() {
@@ -78,9 +85,18 @@ public class ProductListModel {
 
 // Functions
 
-	public static ProductListModel getInstance() {
-		return INSTANCE;
+	public void updateOrder() throws Exception{
+// FILL WITH NEW PRODUCTS
+		prdOrder.getProducts().clear();
+		for(Product prod: this.getProductSltList()) {
+			prdOrder.getProducts().add(prod);
+		}
+// SET SELECTED TABLE	
+		prdOrder.setTable(this.tableSelected.get());
+// SEND THE UPDATE		
+		prdOrder.update();
 	}
+
 
 	public double totalPrice() {
 		double result = 0;
@@ -107,7 +123,7 @@ public class ProductListModel {
 			}
 		}
 	}
-	
+
 	public void emptyData() {
 		this.categoryList.clear();
 		this.productAll.clear();
@@ -115,6 +131,8 @@ public class ProductListModel {
 		this.tableList.clear();
 		this.productSelected.setValue(null);
 		this.productSltList.clear();
+		this.prdOrder = null;
+		this.isUpdateProperty().set(false);
 	}
 
 	public void loadData() {
@@ -155,9 +173,26 @@ public class ProductListModel {
 		}
 	}
 
+	public static ProductListModel getInstance() {
+		return INSTANCE;
+	}
+
+
 // Getters
 	public ObservableList<Product> getProductList() {
 		return productList;
+	}
+
+	public SimpleBooleanProperty isUpdateProperty() {
+		return this.isUpdate;
+	}
+
+	public ProductOrder getPrdOrder() {
+		return prdOrder;
+	}
+
+	public void setPrdOrder(ProductOrder prdOrder) {
+		this.prdOrder = prdOrder;
 	}
 
 	public ObservableList<Category> getCategoryList() {

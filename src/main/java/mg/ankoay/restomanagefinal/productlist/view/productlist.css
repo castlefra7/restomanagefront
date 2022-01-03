@@ -30,3 +30,11 @@
 	-fx-background-color: black;
 	-fx-text-fill: white;
 }
+
+#status {
+	-fx-text-fill: white;
+	-fx-font-size: 22px;
+	-fx-font-weight: 900;
+	-fx-background-color: green;
+	
+}

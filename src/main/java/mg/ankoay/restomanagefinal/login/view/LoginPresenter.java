@@ -31,6 +31,7 @@ public class LoginPresenter extends Presenter {
 			try {
 
 				if (this.model.login()) {
+					this.getPrimaryStage().setTitle("Pos Restaurant - " + User.getInstance().getName().toUpperCase());
 					showMenu();
 				}
 			} catch (HttpHostConnectException ex) {
@@ -39,7 +40,6 @@ public class LoginPresenter extends Presenter {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Erreur de connexion");
 				alert.setHeaderText("Veuillez vérifier que le serveur est disponible");
-				//alert.setContentText("Ooops, there was an error!");
 
 				alert.showAndWait();
 			} catch (Exception ex) {

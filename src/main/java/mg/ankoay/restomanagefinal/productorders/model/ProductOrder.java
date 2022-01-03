@@ -17,6 +17,7 @@ import mg.ankoay.restomanagefinal.commons.attributes.ProductAttr;
 import mg.ankoay.restomanagefinal.commons.attributes.TableAttr;
 import mg.ankoay.restomanagefinal.commons.model.Product;
 import mg.ankoay.restomanagefinal.commons.model.Table;
+import mg.ankoay.restomanagefinal.commons.model.User;
 import mg.ankoay.restomanagefinal.commons.utils.ResponseBody;
 import mg.ankoay.restomanagefinal.commons.utils.Utils;
 import mg.ankoay.restomanagefinal.productorders.attributes.OrderAttr;
@@ -29,6 +30,7 @@ public class ProductOrder {
 	private ObservableList<Product> products = FXCollections
 			.observableArrayList(product -> new Observable[] { product.quantityProperty() });
 	private ObjectProperty<Timestamp> date = new SimpleObjectProperty<Timestamp>();
+	private ObjectProperty<Timestamp> datePayment = new SimpleObjectProperty<Timestamp>();
 	private ObjectProperty<Table> table = new SimpleObjectProperty<>();
 
 	public ProductOrder() {
@@ -43,16 +45,47 @@ public class ProductOrder {
 		this.id_order = id_order;
 	}
 
+	public void update() throws Exception {
+		Gson gson = new Gson();
+		Type type = new TypeToken<ResponseBody<Object>>() {
+		}.getType();
+		OrderAttr attr = new OrderAttr();
+// TODO: WHAT TO DO WITH THE USER ID
+		Integer idUser = Integer.valueOf(User.getInstance().getId());
+		attr.setId_user(idUser);
+		attr.setId_order(getId_order());
+		attr.setTable(new TableAttr(Integer.valueOf(this.getTable().getId())));
+		
+		Set<OrderDetailAttr> orderDetails = new HashSet<>();
+		for (Product product : products) {
+			OrderDetailAttr ordDet = new OrderDetailAttr();
+			ordDet.setAmount(product.getTotal());
+			ordDet.setQuantity(product.getQuantity());
+			ordDet.setUnit_price(product.getPrice());
+			ordDet.setProduct(new ProductAttr(Integer.valueOf(product.getId())));
+			orderDetails.add(ordDet);
+		}
+		attr.setOrderDetails(orderDetails);
+
+		String entity = gson.toJson(attr);
+		ResponseBody<Object> respOrd = gson.fromJson(Utils.putJSON(URL + "/orders", entity), type);
+		if (respOrd.getStatut().getCode() != 200) {
+			throw new Exception(respOrd.getStatut().getMessage());
+		}
+
+
+	}
+
 	public void pay() throws Exception {
 		Gson gson = new Gson();
 		Type type = new TypeToken<ResponseBody<Object>>() {
 		}.getType();
 		OrderAttr attr = new OrderAttr();
 		attr.setId_order(this.getId_order());
-		
+
 		String entity = gson.toJson(attr);
 		ResponseBody<Object> respOrd = gson.fromJson(Utils.putJSON(URL + "/orders/pay", entity), type);
-		if(respOrd.getStatut().getCode() != 200) {
+		if (respOrd.getStatut().getCode() != 200) {
 			throw new Exception(respOrd.getStatut().getMessage());
 		}
 	}
@@ -74,7 +107,7 @@ public class ProductOrder {
 
 		OrderAttr attr = new OrderAttr();
 		attr.setTable(new TableAttr(Integer.valueOf(this.getTable().getId())));
-		attr.setId_table(Integer.valueOf(this.getTable().getId()));
+
 		Set<OrderDetailAttr> orderDetails = new HashSet<>();
 		for (Product product : products) {
 			OrderDetailAttr ordDet = new OrderDetailAttr();
@@ -94,6 +127,10 @@ public class ProductOrder {
 	}
 
 // Properties
+	public ObjectProperty<Timestamp> datePaymentProperty() {
+		return datePayment;
+	}
+
 	public ObjectProperty<Timestamp> dateProperty() {
 		return date;
 	}
@@ -109,6 +146,14 @@ public class ProductOrder {
 
 	public Table getTable() {
 		return this.table.get();
+	}
+
+	public Timestamp getDatePayment() {
+		return this.datePayment.get();
+	}
+
+	public void setDatePayment(Timestamp _date) {
+		this.datePayment.set(_date);
 	}
 
 	public Timestamp getDate() {
