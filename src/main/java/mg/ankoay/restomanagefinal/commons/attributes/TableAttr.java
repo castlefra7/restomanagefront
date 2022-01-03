@@ -3,6 +3,14 @@ package mg.ankoay.restomanagefinal.commons.attributes;
 public class TableAttr {
 	private Integer id;
 	private String name;
+	
+	public TableAttr(Integer _id ) {
+		this.id = _id;
+	}
+	
+	public TableAttr() {
+		
+	}
 
 	public Integer getId() {
 		return id;

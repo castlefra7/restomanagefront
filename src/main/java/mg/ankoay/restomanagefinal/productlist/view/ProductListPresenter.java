@@ -189,6 +189,8 @@ public class ProductListPresenter extends Presenter {
 			Rectangle2D bounds = screen.getVisualBounds();
 
 			Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight() - 32);
+			scene.getStylesheets().add( getClass().getResource("/mg/ankoay/restomanagefinal/productorders/view/productorders.css").
+					toExternalForm());
 			
 			ProductOrderPresenter prdOrdPres = new ProductOrderPresenter(prdCtl, scene, this.getScene());
 			prdOrdPres.setPrimaryStage(this.getPrimaryStage());

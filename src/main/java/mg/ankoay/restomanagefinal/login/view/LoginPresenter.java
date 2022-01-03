@@ -1,9 +1,13 @@
 package mg.ankoay.restomanagefinal.login.view;
 
+import org.apache.http.conn.HttpHostConnectException;
+
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Screen;
 import mg.ankoay.restomanagefinal.commons.model.User;
 import mg.ankoay.restomanagefinal.commons.view.Presenter;
@@ -25,11 +29,25 @@ public class LoginPresenter extends Presenter {
 		this.view.btnLogin.setOnAction(event -> {
 			// System.out.println(this.model.getName() + " " + this.model.getPassword());
 			try {
+
 				if (this.model.login()) {
 					showMenu();
 				}
+			} catch (HttpHostConnectException ex) {
+				ex.printStackTrace();
+
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Erreur de connexion");
+				alert.setHeaderText("Veuillez vérifier que le serveur est disponible");
+				//alert.setContentText("Ooops, there was an error!");
+
+				alert.showAndWait();
 			} catch (Exception ex) {
 				ex.printStackTrace();
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Erreur de connexion");
+				alert.setHeaderText("Veuillez vérifier vos informations de connexion");
+				alert.showAndWait();
 			}
 
 		});
@@ -41,11 +59,13 @@ public class LoginPresenter extends Presenter {
 			FXMLLoader menu = new FXMLLoader(getClass().getResource("/mg/ankoay/restomanagefinal/menu/view/Menu.fxml"));
 			Parent root = menu.load();
 			MenuCtl menuCtl = menu.getController();
-			
+
 			Screen screen = Screen.getPrimary();
 			Rectangle2D bounds = screen.getVisualBounds();
 
 			Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight() - 32);
+			scene.getStylesheets()
+					.add(getClass().getResource("/mg/ankoay/restomanagefinal/menu/view/menu.css").toExternalForm());
 
 			MenuPresenter menuPres = new MenuPresenter(menuCtl, scene);
 			menuPres.setPrimaryStage(this.getPrimaryStage());

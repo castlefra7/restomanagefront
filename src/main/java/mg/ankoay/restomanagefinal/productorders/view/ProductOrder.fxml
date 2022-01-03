@@ -10,7 +10,7 @@
     <children>
 	    <BorderPane  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 	    	<top>
-				<fx:include source="../../topmenu/view/TopMenu.fxml" />
+				<fx:include source="/mg/ankoay/restomanagefinal/topmenu/view/TopMenu.fxml" />
 			</top>
 			<center>
 				<SplitPane>
@@ -19,8 +19,32 @@
 		                    <children>
 		                    	<VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 		                    		<Button fx:id="btnBack">Retour</Button>
-		                    		<Label styleClass="lblSubtitle" text="Liste des commandes" />
-			                    	<TableView fx:id="tblOrders" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		                    		<Label styleClass="lblDate" fx:id="lblDate" />
+		                    		<Label styleClass="lblSubtitle" text="Commandes non payées" />
+			                    	<TableView fx:id="tblOrders">
+			                            <columns>
+			                                <TableColumn text="Date">
+			                                    <cellValueFactory>
+			                                        <PropertyValueFactory property="date" />
+			                                    </cellValueFactory>
+			                                </TableColumn>
+			                                 <TableColumn text="Table">
+			                                    <cellValueFactory>
+			                                        <PropertyValueFactory property="table" />
+			                                    </cellValueFactory>
+			                                </TableColumn>
+			                                 <TableColumn text="Prix total">
+			                                    <cellValueFactory>
+			                                        <PropertyValueFactory property="total" />
+			                                    </cellValueFactory>
+			                                </TableColumn>
+			                            </columns>
+			                            <columnResizePolicy>
+			                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+			                            </columnResizePolicy>
+			                        </TableView>
+			                        <Label styleClass="lblSubtitle" text="Commandes payées" />
+			                        <TableView fx:id="tblOrdersPaid">
 			                            <columns>
 			                                <TableColumn text="Date">
 			                                    <cellValueFactory>
@@ -94,7 +118,7 @@
 				                        	</HBox>
 											<HBox alignment="bottom_left" spacing="7">
 												<children>
-													<Button text="Payer" />
+													<Button fx:id="btnPay" text="Payer" />
 													<Button text="Imprimer" />
 												</children>
 												<padding>
@@ -117,7 +141,4 @@
 			</center>	
 	    </BorderPane>
     </children>
-    <stylesheets>
-    	<URL value="@productorders.css" />
-	</stylesheets>
 </AnchorPane>

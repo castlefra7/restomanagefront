@@ -21,3 +21,10 @@
 	-fx-background-color: black;
 	-fx-text-fill: white;
 }
+
+.lblDate {
+	-fx-font-size: 30px;
+	-fx-font-weight: bold;
+	-fx-text-fill: white;
+	-fx-underline: true;
+}

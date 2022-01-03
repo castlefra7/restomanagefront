@@ -15,7 +15,7 @@ import mg.ankoay.restomanagefinal.commons.utils.Utils;
 import mg.ankoay.restomanagefinal.opencashier.attributes.OpenCashierAttr;
 
 public class OpenCashierModel {
-	private String URL = "http://192.168.88.80:8080/api/back";
+	private String URL = "http://localhost:8080/api/back";
 	NumberFormat numbFormat = NumberFormat.getInstance(new Locale("en", "US"));
 	
 	private StringProperty fund = new SimpleStringProperty(this, "fund");

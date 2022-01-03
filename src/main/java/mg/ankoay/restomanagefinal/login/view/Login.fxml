@@ -36,7 +36,4 @@
 	<padding>
 		<Insets top="250" left="10" right="10" bottom="10"/>
 	</padding>
-	<stylesheets>
-    	<URL value="@login.css" />
-	</stylesheets>
 </BorderPane>

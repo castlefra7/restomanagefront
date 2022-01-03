@@ -26,7 +26,7 @@ import mg.ankoay.restomanagefinal.commons.utils.ResponseBody;
 import mg.ankoay.restomanagefinal.commons.utils.Utils;
 
 public class ProductListModel {
-	private String URL = "http://192.168.88.80:8080/api/back";
+	private String URL = "http://localhost:8080/api/back";
 
 	private final ObservableList<Product> productList = FXCollections.observableArrayList(
 			product -> new Observable[] { product.idProperty(), product.nameProperty(), product.priceProperty() });

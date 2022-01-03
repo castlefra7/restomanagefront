@@ -17,7 +17,7 @@
 				<Menu mnemonicParsing="false" text="Aide">
 					<items>
 						<MenuItem text="A propos" mnemonicParsing="false" />
-						<MenuItem text="Fermer" mnemonicParsing="false" />
+						<MenuItem fx:id="mnQuit" text="Fermer" mnemonicParsing="false" />
 					</items>
 				</Menu>
 			</menus>

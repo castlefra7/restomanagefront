@@ -9,7 +9,7 @@
 
 <BorderPane fx:controller="mg.ankoay.restomanagefinal.menu.view.MenuCtl" xmlns:fx="http://javafx.com/fxml">
 	<top>
-		<fx:include source="../../topmenu/view/TopMenu.fxml" />
+		<fx:include source="/mg/ankoay/restomanagefinal/topmenu/view/TopMenu.fxml" />
 	</top>
 	<center>
 		<GridPane maxWidth="500.0" hgap="7.0" vgap="7.0">
@@ -30,7 +30,4 @@
 			</padding>
 		</GridPane>
 	</center>
-	<stylesheets>
-    	<URL value="@menu.css" />
-	</stylesheets>
 </BorderPane>

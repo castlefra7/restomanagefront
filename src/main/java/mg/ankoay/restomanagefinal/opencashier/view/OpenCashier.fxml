@@ -9,7 +9,7 @@
 
 <BorderPane fx:controller="mg.ankoay.restomanagefinal.opencashier.view.OpenCashierCtl" xmlns:fx="http://javafx.com/fxml">
 	<top>
-		<fx:include source="../../topmenu/view/TopMenu.fxml" />
+		<fx:include source="/mg/ankoay/restomanagefinal/topmenu/view/TopMenu.fxml" />
 	</top>	
 	<center>
 		<AnchorPane>
@@ -43,7 +43,4 @@
 			</children>
 		</AnchorPane>
 	</center>
-	<stylesheets>
-    	<URL value="@openCashier.css" />
-	</stylesheets>
 </BorderPane>

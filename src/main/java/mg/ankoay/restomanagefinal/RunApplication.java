@@ -32,11 +32,13 @@ public class RunApplication extends Application {
 		Screen screen = Screen.getPrimary();
 		Rectangle2D bounds = screen.getVisualBounds();
 		Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight() - 32);
+		scene.getStylesheets().add( getClass().getResource("/mg/ankoay/restomanagefinal/login/view/login.css").
+				toExternalForm());
 
 		LoginPresenter loginPres = new LoginPresenter(loginCtl, scene);
 		loginPres.setPrimaryStage(primaryStage);
-
-		/*ProductOrderModel.getInstance().loadData();
+/*
+		ProductOrderModel.getInstance().loadData();
 		FXMLLoader prdOrder = new FXMLLoader(
 				getClass().getResource("/mg/ankoay/restomanagefinal/productorders/view/ProductOrder.fxml"));
 		Parent root = prdOrder.load();
@@ -48,9 +50,11 @@ public class RunApplication extends Application {
 		Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight() - 32);
 		
 		ProductOrderPresenter prdOrdPres = new ProductOrderPresenter(prdCtl, scene, null);
-		prdOrdPres.setPrimaryStage(primaryStage);*/
+		prdOrdPres.setPrimaryStage(primaryStage);
 		
+*/
 		primaryStage.setScene(scene);
+		
 		primaryStage.show();
 	}
 }

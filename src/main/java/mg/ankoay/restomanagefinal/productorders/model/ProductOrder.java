@@ -14,6 +14,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mg.ankoay.restomanagefinal.commons.attributes.ProductAttr;
+import mg.ankoay.restomanagefinal.commons.attributes.TableAttr;
 import mg.ankoay.restomanagefinal.commons.model.Product;
 import mg.ankoay.restomanagefinal.commons.model.Table;
 import mg.ankoay.restomanagefinal.commons.utils.ResponseBody;
@@ -22,8 +23,9 @@ import mg.ankoay.restomanagefinal.productorders.attributes.OrderAttr;
 import mg.ankoay.restomanagefinal.productorders.attributes.OrderDetailAttr;
 
 public class ProductOrder {
-	private String URL = "http://192.168.88.80:8080/api/back";
+	private String URL = "http://localhost:8080/api/back";
 
+	private Integer id_order;
 	private ObservableList<Product> products = FXCollections
 			.observableArrayList(product -> new Observable[] { product.quantityProperty() });
 	private ObjectProperty<Timestamp> date = new SimpleObjectProperty<Timestamp>();
@@ -31,6 +33,28 @@ public class ProductOrder {
 
 	public ProductOrder() {
 
+	}
+
+	public Integer getId_order() {
+		return id_order;
+	}
+
+	public void setId_order(Integer id_order) {
+		this.id_order = id_order;
+	}
+
+	public void pay() throws Exception {
+		Gson gson = new Gson();
+		Type type = new TypeToken<ResponseBody<Object>>() {
+		}.getType();
+		OrderAttr attr = new OrderAttr();
+		attr.setId_order(this.getId_order());
+		
+		String entity = gson.toJson(attr);
+		ResponseBody<Object> respOrd = gson.fromJson(Utils.putJSON(URL + "/orders/pay", entity), type);
+		if(respOrd.getStatut().getCode() != 200) {
+			throw new Exception(respOrd.getStatut().getMessage());
+		}
 	}
 
 	public double getTotal() {
@@ -47,11 +71,12 @@ public class ProductOrder {
 		Gson gson = new Gson();
 		Type type = new TypeToken<ResponseBody<Object>>() {
 		}.getType();
-		
+
 		OrderAttr attr = new OrderAttr();
+		attr.setTable(new TableAttr(Integer.valueOf(this.getTable().getId())));
 		attr.setId_table(Integer.valueOf(this.getTable().getId()));
 		Set<OrderDetailAttr> orderDetails = new HashSet<>();
-		for(Product product: products) {
+		for (Product product : products) {
 			OrderDetailAttr ordDet = new OrderDetailAttr();
 			ordDet.setAmount(product.getTotal());
 			ordDet.setQuantity(product.getQuantity());
@@ -60,11 +85,11 @@ public class ProductOrder {
 			orderDetails.add(ordDet);
 		}
 		attr.setOrderDetails(orderDetails);
-		
+
 		String entity = gson.toJson(attr);
 		ResponseBody<Object> respOrd = gson.fromJson(Utils.postJSON(URL + "/orders/", entity), type);
 		result = respOrd.getStatut().getMessage();
-		
+
 		return result;
 	}
 

@@ -1,12 +1,16 @@
 package mg.ankoay.restomanagefinal.productorders.view;
 
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import mg.ankoay.restomanagefinal.commons.model.Product;
@@ -26,12 +30,22 @@ public class ProductOrderCtl implements Initializable {
 	TextField txtOrderDetailsTotal;
 	@FXML
 	TextField txtOrderDetailsTable;
+	@FXML
+	Button btnPay;
+	@FXML
+	Label lblDate;
+	@FXML
+	TableView<ProductOrder> tblOrdersPaid;
 	
 	private ProductOrderModel model;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.model = ProductOrderModel.getInstance();
+		Locale locale = new Locale("fr", "FR");
+		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
+		String currDt = dateFormat.format(new Date());
+		lblDate.setText("Date: " + currDt);
 		bindFieldsToModel();
 		conf();
 	}
@@ -50,6 +64,7 @@ public class ProductOrderCtl implements Initializable {
 	
 	public void bindFieldsToModel() {
 		this.tblOrders.setItems(this.model.getProductOrders());
+		this.tblOrdersPaid.setItems(this.model.getProductOrdersPaid());
 	}
 
 }

@@ -41,6 +41,8 @@ public class MenuPresenter extends Presenter {
 			Rectangle2D bounds = screen.getVisualBounds();
 
 			Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight() - 32);
+			scene.getStylesheets().add( getClass().getResource("/mg/ankoay/restomanagefinal/opencashier/view/opencashier.css").
+					toExternalForm());
 
 			OpenCashierPresenter openCashierPres = new OpenCashierPresenter(openCashierCtl, scene, this.getScene());
 			openCashierPres.setPrimaryStage(this.getPrimaryStage());
@@ -67,6 +69,8 @@ public class MenuPresenter extends Presenter {
 			Rectangle2D bounds = screen.getVisualBounds();
 
 			Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight() - 32);
+			scene.getStylesheets().add( getClass().getResource("/mg/ankoay/restomanagefinal/productlist/view/productlist.css").
+					toExternalForm());
 
 			ProductListPresenter productListPres = new ProductListPresenter(productListCtl, scene, this.getScene());
 			productListPres.setPrimaryStage(this.getPrimaryStage());

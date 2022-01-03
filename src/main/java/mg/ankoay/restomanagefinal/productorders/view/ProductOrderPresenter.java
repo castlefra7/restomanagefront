@@ -34,7 +34,29 @@ public class ProductOrderPresenter extends Presenter {
 				this.view.syncTxtOrderDetailsTotal();
 			} else {
 				this.view.txtOrderDetailsDt.setText("");
-
+			}
+		});
+		
+		this.view.tblOrdersPaid.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+			ProductOrder selectedValue = newVal;
+			this.model.getProducOrdertSelected().setValue(selectedValue);
+			
+			if(newVal != null) {
+				this.view.txtOrderDetailsDt.setText(selectedValue.getDate().toString());
+				this.view.tblOrderDetails.setItems(selectedValue.getProducts());
+				this.view.txtOrderDetailsTable.setText(selectedValue.getTable().getName());
+				this.view.syncTxtOrderDetailsTotal();
+			} else {
+				this.view.txtOrderDetailsDt.setText("");
+			}
+		});
+		
+		this.view.btnPay.setOnAction(event -> {
+			try {
+				this.model.pay();
+				this.model.loadData();
+			} catch(Exception ex) {
+				ex.printStackTrace();
 			}
 		});
 		

@@ -8,7 +8,7 @@
 
 <BorderPane fx:controller="mg.ankoay.restomanagefinal.productlist.view.ProductListCtl" xmlns:fx="http://javafx.com/fxml">
 	<top>
-		<fx:include source="../../topmenu/view/TopMenu.fxml" />
+		<fx:include source="/mg/ankoay/restomanagefinal/topmenu/view/TopMenu.fxml" />
 	</top>
 	<left>
 		<VBox fillWidth="true">
@@ -63,7 +63,7 @@
 				<Label fx:id="status" />
 				<HBox>
 					<children>
-						<Label style="-fx-font-weight:bold" text="Total:" />
+						<Label fx:id="lblTotToPay" text="Total à payer:" />
 						<Region HBox.hgrow="ALWAYS" />
 						<Label fx:id="totalPriceLbl" text="0 MGA" />
 					</children>
@@ -89,7 +89,7 @@
 			<Button  styleClass="btnCustom"  text="Retour vers menu" fx:id="btnBack" />
 			<HBox>
 				<children>
-					<Label styleClass="lblSubtitle"  HBox.hgrow="ALWAYS" text="Categories" />
+					<Label styleClass="lblSubtitle"  HBox.hgrow="ALWAYS" text="Catégories" />
 				</children>
 			</HBox>
 			<FlowPane fx:id="categories" />
@@ -102,7 +102,4 @@
 			</padding>
 		</VBox>
 	</center>
-	<stylesheets>
-    	<URL value="@productlist.css" />
-	</stylesheets>
 </BorderPane>
