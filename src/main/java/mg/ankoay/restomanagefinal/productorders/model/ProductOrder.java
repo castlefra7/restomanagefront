@@ -99,7 +99,7 @@ public class ProductOrder {
 		return total;
 	}
 
-	public String sendToDB() throws Exception {
+	public String sendToDB(boolean paid) throws Exception {
 		String result = "";
 		Gson gson = new Gson();
 		Type type = new TypeToken<ResponseBody<Object>>() {
@@ -120,7 +120,9 @@ public class ProductOrder {
 		attr.setOrderDetails(orderDetails);
 
 		String entity = gson.toJson(attr);
-		ResponseBody<Object> respOrd = gson.fromJson(Utils.postJSON(URL + "/orders/", entity), type);
+		String endpoint = "/orders/";
+		if(paid) endpoint = "/orders-pay/";
+		ResponseBody<Object> respOrd = gson.fromJson(Utils.postJSON(URL + endpoint, entity), type);
 		result = respOrd.getStatut().getMessage();
 
 		return result;

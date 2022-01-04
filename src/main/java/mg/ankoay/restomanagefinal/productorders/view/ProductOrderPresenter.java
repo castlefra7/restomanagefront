@@ -18,31 +18,40 @@ public class ProductOrderPresenter extends Presenter {
 	private ProductOrderCtl view;
 	private ProductOrderModel model;
 	private final Scene scenePrdList;
+	private final Scene sceneMenu;
 
-	public ProductOrderPresenter(ProductOrderCtl _view, Scene _scene, Scene _scenePrdList) {
+	public ProductOrderPresenter(ProductOrderCtl _view, Scene _scene, Scene _scenePrdList, Scene _sceneMenu) {
 		this.model = ProductOrderModel.getInstance();
 		this.view = _view;
 		this.scene = _scene;
 		this.scenePrdList = _scenePrdList;
+		this.sceneMenu = _sceneMenu;
 		this.attachEvents();
 	}
 
 	public void attachEvents() {
-		this.view.btnBack.setOnAction(e -> {
-			if (ProductListModel.getInstance().isUpdateProperty().get()) {
-				ProductListModel.getInstance().emptyData();
-				ProductListModel.getInstance().loadData();
+
+		this.model.getProducOrdertSelected().addListener((obs, oldVal, newVal) -> {
+			if (newVal == null) {
+				this.view.btnUpdate.setDisable(true);
+				this.view.btnPay.setDisable(true);
 			}
+		});
+
+		this.view.btnBack.setOnAction(e -> {
+			// if (ProductListModel.getInstance().isUpdateProperty().get())
+			ProductListModel.getInstance().emptyData();
+			ProductListModel.getInstance().loadData();
 
 			this.getPrimaryStage().setScene(this.scenePrdList);
 		});
 
 		this.view.tblOrdersUnpaid.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newVal) -> {
-			showSlctOrder(newVal);
+			showSlctOrder(newVal, false);
 		});
 
 		this.view.tblOrdersPaid.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newVal) -> {
-			showSlctOrder(newVal);
+			showSlctOrder(newVal, true);
 		});
 
 		this.view.tblOrdersUnpaid.focusedProperty().addListener((obs, old, newVal) -> {
@@ -50,9 +59,6 @@ public class ProductOrderPresenter extends Presenter {
 				if (this.view.tblOrdersUnpaid.getSelectionModel().isEmpty() == false) {
 					this.view.tblOrdersUnpaid.getSelectionModel().clearSelection();
 				}
-			} else {
-				if (this.view.tblOrdersUnpaid.getItems().size() > 0)
-					this.view.btnPay.setDisable(false);
 			}
 		});
 
@@ -61,8 +67,6 @@ public class ProductOrderPresenter extends Presenter {
 				if (this.view.tblOrdersPaid.getSelectionModel().isEmpty() == false) {
 					this.view.tblOrdersPaid.getSelectionModel().clearSelection();
 				}
-			} else {
-				this.view.btnPay.setDisable(true);
 			}
 
 		});
@@ -96,7 +100,6 @@ public class ProductOrderPresenter extends Presenter {
 			prdListModel.emptyData();
 			prdListModel.loadData();
 
-
 			FXMLLoader prdList = new FXMLLoader(
 					getClass().getResource("/mg/ankoay/restomanagefinal/productlist/view/ProductList.fxml"));
 			Parent root = prdList.load();
@@ -109,34 +112,37 @@ public class ProductOrderPresenter extends Presenter {
 			scene.getStylesheets().add(getClass()
 					.getResource("/mg/ankoay/restomanagefinal/productlist/view/productlist.css").toExternalForm());
 
-			ProductListPresenter productListPres = new ProductListPresenter(productListCtl, scene, this.getScene());
+			ProductListPresenter productListPres = new ProductListPresenter(productListCtl, scene, this.sceneMenu);
 			productListPres.setPrimaryStage(this.getPrimaryStage());
 
 			this.getPrimaryStage().setScene(scene);
 
 			prdListModel.setPrdOrder(this.model.getProducOrdertSelected().get());
 			prdListModel.isUpdateProperty().set(true);
-			
+
 // FILL THE SELECTED PRODUCTS
 			for (Table table : prdListModel.getTableList()) {
-				if (Integer.valueOf(table.getId()) == Integer.valueOf(this.model.getProducOrdertSelected().get().getTable().getId())) {
+				if (Integer.valueOf(table.getId()) == Integer
+						.valueOf(this.model.getProducOrdertSelected().get().getTable().getId())) {
 					prdListModel.getTableSelected().set(table);
 				}
 			}
 
 			for (Product prod : this.model.getProducOrdertSelected().get().getProducts()) {
 				ProductListModel.getInstance().addProduct(prod);
-			}		
+			}
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	private void showSlctOrder(ProductOrder newVal) {
+	private void showSlctOrder(ProductOrder newVal, boolean enablBtn) {
 		ProductOrder selectedValue = newVal;
 		if (selectedValue != null) {
 			this.model.getProducOrdertSelected().setValue(selectedValue);
+			this.view.btnPay.setDisable(enablBtn);
+			this.view.btnUpdate.setDisable(enablBtn);
 		}
 
 		if (newVal != null) {

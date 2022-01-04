@@ -34,7 +34,7 @@ public class ProductListPresenter extends Presenter {
 	private Timeline wonder;
 	private Scene sceneMenu;
 
-	public ProductListPresenter(ProductListCtl _productListCtl, Scene _parent,  Scene _sceneMenu) {
+	public ProductListPresenter(ProductListCtl _productListCtl, Scene _parent, Scene _sceneMenu) {
 		this.model = ProductListModel.getInstance();
 		this.view = _productListCtl;
 		this.scene = _parent;
@@ -48,9 +48,9 @@ public class ProductListPresenter extends Presenter {
 	}
 
 	public void leftEvent() {
-		
+
 		this.model.isUpdateProperty().addListener((obs, oldVal, newVal) -> {
-			if(newVal) {
+			if (newVal) {
 				this.view.btnUpdateOrder.setVisible(true);
 				this.view.btnPay.setVisible(false);
 				this.view.btnOrder.setVisible(false);
@@ -58,26 +58,25 @@ public class ProductListPresenter extends Presenter {
 					try {
 						this.model.updateOrder();
 						this.showProductOrder();
-					} catch(Exception ex) {
+					} catch (Exception ex) {
 						ex.printStackTrace();
 						Alert alert = new Alert(AlertType.ERROR);
 						alert.setTitle("Erreur de connexion");
 						alert.setHeaderText(ex.getMessage());
 						alert.showAndWait();
 					}
-					
+
 				});
 			} else {
 				this.view.btnUpdateOrder.setVisible(false);
 				this.view.btnPay.setVisible(true);
 				this.view.btnOrder.setVisible(true);
 			}
-			
+
 		});
 
-		
 		this.view.totalPriceLbl.textProperty().bind(this.model.getTotalPrice().asString(Locale.FRENCH, "%,.2f MGA"));
-		
+
 		this.view.btnBack.setOnAction(event -> {
 			this.getPrimaryStage().setScene(this.sceneMenu);
 		});
@@ -116,29 +115,11 @@ public class ProductListPresenter extends Presenter {
 		});
 
 		this.view.btnOrder.setOnAction(e -> {
-			try {
-// Checking can open new scene
-				if (this.model.getProductSltList().size() < 1 || this.model.getTableSelected().getValue() == null)
-					return;
-// Adding new items
-				ProductOrder prdOrd = new ProductOrder();
-				prdOrd.setTable(this.model.getTableSelected().getValue());
-				prdOrd.setDate(new Timestamp((new Date()).getTime()));
-				for (Product product : this.model.getProductSltList()) {
-					prdOrd.getProducts().add(new Product(product.getId(), product.getName(), product.getPrice(),
-							product.getIdCategory(), product.getQuantity()));
-					product.reset();
-				}
-				//TODO: ProductOrderModel.getInstance().getProductOrders().add(prdOrd); // this line is no longer needed
-// Send to DB				
-				prdOrd.sendToDB();
-// Clean selected products
-				this.model.getProductSltList().clear();
-// Show status				
-				tempStatus();
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+			this.sendOrder(false);
+		});
+		
+		this.view.btnPay.setOnAction(e -> {
+			this.sendOrder(true);
 		});
 
 		this.view.cmbTables.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -191,6 +172,33 @@ public class ProductListPresenter extends Presenter {
 	}
 
 // LEFT PANE METHODS
+	private void sendOrder(boolean paid) {
+		try {
+			// Checking can open new scene
+			if (this.model.getProductSltList().size() < 1 || this.model.getTableSelected().getValue() == null)
+				return;
+			// Adding new items
+			ProductOrder prdOrd = new ProductOrder();
+			prdOrd.setTable(this.model.getTableSelected().getValue());
+			prdOrd.setDate(new Timestamp((new Date()).getTime()));
+			for (Product product : this.model.getProductSltList()) {
+				prdOrd.getProducts().add(new Product(product.getId(), product.getName(), product.getPrice(),
+						product.getIdCategory(), product.getQuantity()));
+				product.reset();
+			}
+			// TODO: ProductOrderModel.getInstance().getProductOrders().add(prdOrd); // this
+			// line is no longer needed
+			// Send to DB
+			prdOrd.sendToDB(paid);
+			// Clean selected products
+			this.model.getProductSltList().clear();
+			// Show status
+			tempStatus();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
 	private void tempStatus() {
 		view.status.setStyle("-fx-padding: 7px;");
 		view.status.setText("Succès");
@@ -220,10 +228,11 @@ public class ProductListPresenter extends Presenter {
 			Rectangle2D bounds = screen.getVisualBounds();
 
 			Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight() - 32);
-			scene.getStylesheets().add( getClass().getResource("/mg/ankoay/restomanagefinal/productorders/view/productorders.css").
-					toExternalForm());
-			
-			ProductOrderPresenter prdOrdPres = new ProductOrderPresenter(prdCtl, scene, this.getScene());
+			scene.getStylesheets().add(getClass()
+					.getResource("/mg/ankoay/restomanagefinal/productorders/view/productorders.css").toExternalForm());
+
+			ProductOrderPresenter prdOrdPres = new ProductOrderPresenter(prdCtl, scene, this.getScene(),
+					this.sceneMenu);
 			prdOrdPres.setPrimaryStage(this.getPrimaryStage());
 
 			this.getPrimaryStage().setScene(scene);

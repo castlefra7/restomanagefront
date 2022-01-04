@@ -36,6 +36,7 @@ public class Product {
 	}
 
 // Methods
+	
 	public void reset() {
 		this.setQuantity(1);
 	}

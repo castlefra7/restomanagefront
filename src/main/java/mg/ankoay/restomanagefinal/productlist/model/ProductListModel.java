@@ -54,7 +54,6 @@ public class ProductListModel {
 	public ProductListModel() {
 		attachListeners();
 	}
-	
 
 	public void attachListeners() {
 		ListChangeListener<Product> sltListProdListener = new ListChangeListener<Product>() {
@@ -85,10 +84,10 @@ public class ProductListModel {
 
 // Functions
 
-	public void updateOrder() throws Exception{
+	public void updateOrder() throws Exception {
 // FILL WITH NEW PRODUCTS
 		prdOrder.getProducts().clear();
-		for(Product prod: this.getProductSltList()) {
+		for (Product prod : this.getProductSltList()) {
 			prdOrder.getProducts().add(prod);
 		}
 // SET SELECTED TABLE	
@@ -96,7 +95,6 @@ public class ProductListModel {
 // SEND THE UPDATE		
 		prdOrder.update();
 	}
-
 
 	public double totalPrice() {
 		double result = 0;
@@ -107,8 +105,19 @@ public class ProductListModel {
 	}
 
 	public void addProduct(Product prod) {
-		if (this.productSltList.indexOf(prod) < 0)
+		boolean isThere = false;
+
+		for (Product other : this.productSltList) {
+			if (other.getId().equals(prod.getId())) {
+				isThere = true;
+				break;
+			}
+		}
+
+		if (!isThere) {
 			this.productSltList.add(prod);
+		}
+
 	}
 
 	public void filterProduct(String idCategory) {
@@ -176,7 +185,6 @@ public class ProductListModel {
 	public static ProductListModel getInstance() {
 		return INSTANCE;
 	}
-
 
 // Getters
 	public ObservableList<Product> getProductList() {

@@ -65,6 +65,9 @@ public class ProductOrderCtl implements Initializable {
 		this.txtOrderDetailsTotal.setEditable(false);
 		this.txtOrderDetailsDt.setEditable(false);
 		this.txtOrderDetailsTable.setEditable(false);
+		
+		this.btnUpdate.setDisable(true);
+		this.btnPay.setDisable(true);
 	}
 	
 	public void bindFieldsToModel() {

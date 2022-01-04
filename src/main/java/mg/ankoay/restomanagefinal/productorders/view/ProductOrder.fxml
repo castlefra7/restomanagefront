@@ -82,7 +82,7 @@
 		                    	<VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 		                			<children>
 		                				<Label text="Détails commande" styleClass="lblSubtitle" />
-		                				<Label styleClass="lblField" text="Date" />
+		                				<Label styleClass="lblField" text="Date commande" />
 		                				<TextField fx:id="txtOrderDetailsDt"/>
 		                				<Label styleClass="lblField" text="Table" />
 		                				<TextField fx:id="txtOrderDetailsTable"/>
