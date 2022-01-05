@@ -13,6 +13,10 @@ import mg.ankoay.restomanagefinal.commons.model.User;
 
 public class Utils {
 	
+	public static String capitalize(String txt) {
+		return Character.toUpperCase(txt.charAt(0)) + txt.substring(1);
+	}
+	
 	public static String putJSON(String url, String entity) throws Exception {
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 

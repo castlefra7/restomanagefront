@@ -61,7 +61,7 @@ public class ProductListPresenter extends Presenter {
 					} catch (Exception ex) {
 						ex.printStackTrace();
 						Alert alert = new Alert(AlertType.ERROR);
-						alert.setTitle("Erreur de connexion");
+						alert.setTitle("Erreur");
 						alert.setHeaderText(ex.getMessage());
 						alert.showAndWait();
 					}
@@ -117,7 +117,7 @@ public class ProductListPresenter extends Presenter {
 		this.view.btnOrder.setOnAction(e -> {
 			this.sendOrder(false);
 		});
-		
+
 		this.view.btnPay.setOnAction(e -> {
 			this.sendOrder(true);
 		});
@@ -174,10 +174,10 @@ public class ProductListPresenter extends Presenter {
 // LEFT PANE METHODS
 	private void sendOrder(boolean paid) {
 		try {
-			// Checking can open new scene
+// Checking can open new scene
 			if (this.model.getProductSltList().size() < 1 || this.model.getTableSelected().getValue() == null)
 				return;
-			// Adding new items
+// Adding new items
 			ProductOrder prdOrd = new ProductOrder();
 			prdOrd.setTable(this.model.getTableSelected().getValue());
 			prdOrd.setDate(new Timestamp((new Date()).getTime()));
@@ -186,13 +186,12 @@ public class ProductListPresenter extends Presenter {
 						product.getIdCategory(), product.getQuantity()));
 				product.reset();
 			}
-			// TODO: ProductOrderModel.getInstance().getProductOrders().add(prdOrd); // this
-			// line is no longer needed
-			// Send to DB
+// TODO: Remove ProductOrderModel.getInstance().getProductOrders().add(prdOrd);
+// Send to DB
 			prdOrd.sendToDB(paid);
-			// Clean selected products
+// Clean selected products
 			this.model.getProductSltList().clear();
-			// Show status
+// Show status
 			tempStatus();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -218,7 +217,7 @@ public class ProductListPresenter extends Presenter {
 	private void showProductOrder() {
 // Open Scene		 
 		try {
-			ProductOrderModel.getInstance().loadData();
+			ProductOrderModel.getInstance().loadData(null);
 			FXMLLoader prdOrder = new FXMLLoader(
 					getClass().getResource("/mg/ankoay/restomanagefinal/productorders/view/ProductOrder.fxml"));
 			Parent root = prdOrder.load();

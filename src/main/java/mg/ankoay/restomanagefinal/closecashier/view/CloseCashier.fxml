@@ -7,7 +7,7 @@
 <?import java.net.URL?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:controller="mg.ankoay.restomanagefinal.opencashier.view.OpenCashierCtl" xmlns:fx="http://javafx.com/fxml">
+<BorderPane fx:controller="mg.ankoay.restomanagefinal.closecashier.view.CloseCashierCtl" xmlns:fx="http://javafx.com/fxml">
 	<top>
 		<fx:include source="/mg/ankoay/restomanagefinal/topmenu/view/TopMenu.fxml" />
 	</top>	
@@ -17,9 +17,9 @@
 				<VBox prefWidth="500.0" maxWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" >
 					<children>
 						<Button fx:id="btnBack" text="Retour" />
-						<GridPane  alignment="CENTER" hgap="7.0" vgap="7.0">
+						<GridPane  alignment="CENTER" hgap="7.0" vgap="10.0">
 							<children>
-								<Label fx:id="lblTitle" text="Ouverture caisse" GridPane.columnIndex="1" GridPane.rowIndex="1">
+								<Label fx:id="lblTitle" text="Fermeture caisse" GridPane.columnIndex="1" GridPane.rowIndex="1">
 									<font>
 										<Font name="Arial Bold" size="24.0" />
 									</font>
@@ -29,9 +29,11 @@
 								</Label>
 								
 								<Label fx:id="lblDt" text="Date 05 Janv 2022" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-								<Label styleClass="lblField" text="Fond de caisse" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-								<TextField prefWidth="250.0" fx:id="txtFund" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-								<Button prefWidth="250.0" fx:id="btnValidate" text="Valider" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+								<Label styleClass="lblField" text="Montant dans système" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+								<TextField prefWidth="250.0" fx:id="txtSysAmnt" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+								<Label  styleClass="lblField" text="Montant réel" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+								<TextField prefWidth="250.0" fx:id="txtRealAmnt" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+								<Button prefWidth="250.0" fx:id="btnValidate" text="Valider" GridPane.columnIndex="1" GridPane.rowIndex="8" />
 							</children>
 						</GridPane>
 					</children>

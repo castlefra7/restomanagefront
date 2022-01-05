@@ -9,7 +9,9 @@ import javafx.scene.control.Button;
 
 public class MenuCtl implements Initializable {
 	@FXML
-	Button btnjourneyBegin;
+	Button btnJourneyBegin;
+	@FXML
+	Button btnJourneyEnd;
 	@FXML
 	Button btnPOS;
 	

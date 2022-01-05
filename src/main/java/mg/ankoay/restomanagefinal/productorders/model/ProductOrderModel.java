@@ -1,6 +1,8 @@
 package mg.ankoay.restomanagefinal.productorders.model;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -43,14 +45,19 @@ public class ProductOrderModel {
 		}
 	}
 
-	public void loadData() throws Exception {
+	public void loadData(String dt) throws Exception {
 
 		clearData();
 		Gson gson = new Gson();
 		Type type = new TypeToken<ResponseBody<OrderAttr>>() {
 		}.getType();
 		
-		ResponseBody<OrderAttr> respCat = gson.fromJson(Utils.getJSON(URL + "/orders/unpaid"), type);
+		if(dt == null) {
+			SimpleDateFormat sdt = new SimpleDateFormat("yyyy-MM-dd");
+			dt = sdt.format(new Date());
+		}
+		
+		ResponseBody<OrderAttr> respCat = gson.fromJson(Utils.getJSON(URL + "/orders/unpaid?date=" + dt), type);
 		if(respCat.getStatut().getCode() != 200) {
 			throw new Exception(respCat.getStatut().getMessage());
 		} else {
@@ -58,7 +65,7 @@ public class ProductOrderModel {
 			copyList(this.getProductOrders(), orders);
 		}
 		
-		respCat = gson.fromJson(Utils.getJSON(URL + "/orders/paid"), type);
+		respCat = gson.fromJson(Utils.getJSON(URL + "/orders/paid?date=" + dt), type);
 		if(respCat.getStatut().getCode() != 200) {
 			throw new Exception(respCat.getStatut().getMessage());
 		} else {

@@ -37,7 +37,7 @@
 	-fx-font-weight: 900;
 }
 
-#btnValidate {
+#btnValidate,  #txtSysAmnt {
 	-fx-font-size: 16px;
 	-fx-font-weight: 900;
 }

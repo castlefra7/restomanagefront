@@ -133,7 +133,7 @@ public class ProductListModel {
 		}
 	}
 
-	public void emptyData() {
+	private void emptyData() {
 		this.categoryList.clear();
 		this.productAll.clear();
 		this.productList.clear();
@@ -144,42 +144,41 @@ public class ProductListModel {
 		this.isUpdateProperty().set(false);
 	}
 
-	public void loadData() {
-		try {
-			Gson gson = new Gson();
+	public void loadData() throws Exception {
+	
+		emptyData();
+		Gson gson = new Gson();
 
-			Type type = new TypeToken<ResponseBody<CategoryAttr>>() {
-			}.getType();
-			ResponseBody<CategoryAttr> respCat = gson.fromJson(Utils.getJSON(URL + "/product-categories"), type);
-			List<CategoryAttr> categories = respCat.getData();
-			for (CategoryAttr categ : categories) {
-				Category trueCateg = new Category(String.valueOf(categ.getId()), categ.getName());
-				this.categoryList.add(trueCateg);
-			}
-
-			Type typeProd = new TypeToken<ResponseBody<ProductAttr>>() {
-			}.getType();
-			ResponseBody<ProductAttr> respProd = gson.fromJson(Utils.getJSON(URL + "/products"), typeProd);
-			List<ProductAttr> products = respProd.getData();
-			for (ProductAttr prod : products) {
-				Product trueProd = new Product(String.valueOf(prod.getId()), prod.getName(), prod.getPrice(),
-						String.valueOf(prod.getCategory().getId()), 1);
-				productAll.add(trueProd);
-			}
-			this.productList.setAll(productAll);
-
-			Type typeTbl = new TypeToken<ResponseBody<TableAttr>>() {
-			}.getType();
-			ResponseBody<TableAttr> respTbl = gson.fromJson(Utils.getJSON(URL + "/tables"), typeTbl);
-			List<TableAttr> tables = respTbl.getData();
-			for (TableAttr tbl : tables) {
-				Table trueTbl = new Table(String.valueOf(tbl.getId()), tbl.getName());
-				this.tableList.add(trueTbl);
-			}
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		Type type = new TypeToken<ResponseBody<CategoryAttr>>() {
+		}.getType();
+		ResponseBody<CategoryAttr> respCat = gson.fromJson(Utils.getJSON(URL + "/product-categories"), type);
+		List<CategoryAttr> categories = respCat.getData();
+		for (CategoryAttr categ : categories) {
+			Category trueCateg = new Category(String.valueOf(categ.getId()), categ.getName());
+			this.categoryList.add(trueCateg);
 		}
+
+		Type typeProd = new TypeToken<ResponseBody<ProductAttr>>() {
+		}.getType();
+		ResponseBody<ProductAttr> respProd = gson.fromJson(Utils.getJSON(URL + "/products"), typeProd);
+		List<ProductAttr> products = respProd.getData();
+		for (ProductAttr prod : products) {
+			Product trueProd = new Product(String.valueOf(prod.getId()), prod.getName(), prod.getPrice(),
+					String.valueOf(prod.getCategory().getId()), 1);
+			productAll.add(trueProd);
+		}
+		this.productList.setAll(productAll);
+
+		Type typeTbl = new TypeToken<ResponseBody<TableAttr>>() {
+		}.getType();
+		ResponseBody<TableAttr> respTbl = gson.fromJson(Utils.getJSON(URL + "/tables"), typeTbl);
+		List<TableAttr> tables = respTbl.getData();
+		for (TableAttr tbl : tables) {
+			Table trueTbl = new Table(String.valueOf(tbl.getId()), tbl.getName());
+			this.tableList.add(trueTbl);
+		}
+
+	
 	}
 
 	public static ProductListModel getInstance() {

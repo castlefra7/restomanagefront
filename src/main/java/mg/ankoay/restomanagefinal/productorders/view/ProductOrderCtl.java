@@ -3,6 +3,7 @@ package mg.ankoay.restomanagefinal.productorders.view;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -10,7 +11,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import mg.ankoay.restomanagefinal.commons.model.Product;
@@ -35,8 +36,13 @@ public class ProductOrderCtl implements Initializable {
 	@FXML
 	Button btnUpdate;
 	
+	
 	@FXML
-	Label lblDate;
+	DatePicker dtpDate;
+	@FXML
+	Button btnPrev;
+	@FXML
+	Button btnNext;
 	@FXML
 	TableView<ProductOrder> tblOrdersPaid;
 	
@@ -48,7 +54,6 @@ public class ProductOrderCtl implements Initializable {
 		Locale locale = new Locale("fr", "FR");
 		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
 		String currDt = dateFormat.format(new Date());
-		lblDate.setText("Date: " + currDt);
 		bindFieldsToModel();
 		conf();
 	}
@@ -68,6 +73,9 @@ public class ProductOrderCtl implements Initializable {
 		
 		this.btnUpdate.setDisable(true);
 		this.btnPay.setDisable(true);
+		
+		this.dtpDate.setEditable(false);
+		this.dtpDate.setValue(LocalDate.now());
 	}
 	
 	public void bindFieldsToModel() {

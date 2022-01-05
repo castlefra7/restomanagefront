@@ -22,8 +22,9 @@
 						<Insets top="0" left="0" right="0" bottom="17"/>
 					</padding>
 				</Label>
-				<Button minHeight="150" minWidth="300" fx:id="btnjourneyBegin" text="Ouverture caisse" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				<Button minHeight="150" minWidth="300" fx:id="btnJourneyBegin" text="Ouverture caisse" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 				<Button minHeight="150" minWidth="300" fx:id="btnPOS" text="Caisse enregistreuse" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+				<Button minHeight="150" minWidth="300" fx:id="btnJourneyEnd" text="Fermeture caisse" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 			</children>
 			<padding>
 				<Insets top="250" />

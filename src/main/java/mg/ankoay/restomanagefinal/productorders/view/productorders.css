@@ -1,9 +1,9 @@
 .v-box {
-	-fx-background-color: teal;
+	-fx-background-color: #C48252;
 }
 
 .container-pane {
-	-fx-background-color: teal;
+	-fx-background-color: #C48252;
 }
 
 .lblField {
@@ -23,7 +23,7 @@
 }
 
 .lblDate {
-	-fx-font-size: 30px;
+	-fx-font-size: 28px;
 	-fx-font-weight: bold;
 	-fx-text-fill: white;
 	-fx-underline: true;

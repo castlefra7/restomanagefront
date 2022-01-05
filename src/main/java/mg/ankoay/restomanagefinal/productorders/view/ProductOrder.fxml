@@ -19,7 +19,17 @@
 		                    <children>
 		                    	<VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 		                    		<Button fx:id="btnBack">Retour</Button>
-		                    		<Label styleClass="lblDate" fx:id="lblDate" />
+		                    		<HBox spacing="7">
+		                    			<children>
+		                    				<Button text="Préc." fx:id="btnPrev" />
+		                    				<DatePicker fx:id="dtpDate" />
+		                    				<Button text="Suiv." fx:id="btnNext" />
+		                    			</children>
+		                    			<padding>
+											<Insets top="10" left="0" right="0" bottom="10"/>
+										</padding>
+		                    		</HBox>
+		                    		
 		                    		<Label styleClass="lblSubtitle" text="Commandes non payées" />
 			                    	<TableView fx:id="tblOrdersUnpaid">
 			                            <columns>

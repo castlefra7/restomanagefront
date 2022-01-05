@@ -7,6 +7,7 @@ import java.util.Locale;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import mg.ankoay.restomanagefinal.commons.model.User;
@@ -16,9 +17,8 @@ import mg.ankoay.restomanagefinal.opencashier.attributes.OpenCashierAttr;
 
 public class OpenCashierModel {
 	private String URL = "http://localhost:8080/api/back";
-	NumberFormat numbFormat = NumberFormat.getInstance(new Locale("en", "US"));
 	
-	private StringProperty fund = new SimpleStringProperty(this, "fund");
+	private SimpleDoubleProperty fund = new SimpleDoubleProperty(this, "fund");
 	private static final OpenCashierModel INSTANCE = new OpenCashierModel();
 	
 
@@ -34,7 +34,7 @@ public class OpenCashierModel {
 		}.getType();
 		
 		OpenCashierAttr attr = new OpenCashierAttr();
-		attr.setFund(numbFormat.parse(this.getFund()).doubleValue());
+		attr.setFund(this.getFund());
 		attr.setId_user(Integer.valueOf(connectedUser.getId()));
 		
 		String entity = gson.toJson(attr);
@@ -50,16 +50,16 @@ public class OpenCashierModel {
 	}
 
 // Getters and setters
-	public String getFund() {
+	public Double getFund() {
 		return this.fund.get();
 	}
 
-	public void setFund(String _fund) {
+	public void setFund(Double _fund) {
 		this.fund.set(_fund);
 	}
 
 // Properties
-	public StringProperty fundProperty() {
+	public SimpleDoubleProperty fundProperty() {
 		return this.fund;
 	}
 }

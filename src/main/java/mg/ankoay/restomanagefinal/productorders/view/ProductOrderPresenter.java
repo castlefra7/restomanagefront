@@ -1,9 +1,13 @@
 package mg.ankoay.restomanagefinal.productorders.view;
 
+import java.time.LocalDate;
+
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Screen;
 import mg.ankoay.restomanagefinal.commons.model.Product;
 import mg.ankoay.restomanagefinal.commons.model.Table;
@@ -35,15 +39,54 @@ public class ProductOrderPresenter extends Presenter {
 			if (newVal == null) {
 				this.view.btnUpdate.setDisable(true);
 				this.view.btnPay.setDisable(true);
+				this.view.txtOrderDetailsDt.setText("");
+				this.view.tblOrderDetails.getItems().clear();
+				this.view.txtOrderDetailsTable.setText("");
+				this.view.syncTxtOrderDetailsTotal();
+			}
+		});
+
+		this.view.btnPrev.setOnAction(event -> {
+			LocalDate dt = this.view.dtpDate.getValue();
+			LocalDate prev = dt.minusDays(1);
+			this.view.dtpDate.setValue(prev);
+		});
+
+		this.view.btnNext.setOnAction(event -> {
+			LocalDate dt = this.view.dtpDate.getValue();
+			LocalDate next = dt.plusDays(1);
+
+			this.view.dtpDate.setValue(next);
+		});
+
+		this.view.dtpDate.setOnAction(event -> {
+			try {
+				ProductOrderModel.getInstance().loadData(this.view.dtpDate.getValue().toString());
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Erreur");
+				alert.setHeaderText(ex.getMessage());
+
+				alert.showAndWait();
 			}
 		});
 
 		this.view.btnBack.setOnAction(e -> {
 			// if (ProductListModel.getInstance().isUpdateProperty().get())
-			ProductListModel.getInstance().emptyData();
-			ProductListModel.getInstance().loadData();
+			try {
+				ProductListModel.getInstance().loadData();
 
-			this.getPrimaryStage().setScene(this.scenePrdList);
+				this.getPrimaryStage().setScene(this.scenePrdList);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Erreur");
+				alert.setHeaderText(ex.getMessage());
+
+				alert.showAndWait();
+			}
+
 		});
 
 		this.view.tblOrdersUnpaid.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newVal) -> {
@@ -68,7 +111,6 @@ public class ProductOrderPresenter extends Presenter {
 					this.view.tblOrdersPaid.getSelectionModel().clearSelection();
 				}
 			}
-
 		});
 
 		this.view.btnUpdate.setOnAction(event -> {
@@ -78,13 +120,9 @@ public class ProductOrderPresenter extends Presenter {
 		this.view.btnPay.setOnAction(event -> {
 			try {
 				this.model.pay();
-				this.model.loadData();
+				this.model.loadData(null);
 
 				this.model.getProducOrdertSelected().setValue(null);
-				this.view.txtOrderDetailsDt.setText("");
-				this.view.tblOrderDetails.getItems().clear();
-				this.view.txtOrderDetailsTable.setText("");
-				this.view.syncTxtOrderDetailsTotal();
 
 				this.view.btnPay.setDisable(true);
 			} catch (Exception ex) {
@@ -97,7 +135,6 @@ public class ProductOrderPresenter extends Presenter {
 		try {
 // TODO: Check that the cashier is open	
 			ProductListModel prdListModel = ProductListModel.getInstance();
-			prdListModel.emptyData();
 			prdListModel.loadData();
 
 			FXMLLoader prdList = new FXMLLoader(

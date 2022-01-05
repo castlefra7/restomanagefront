@@ -23,7 +23,7 @@ public class RunApplication extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("POS Restaurant");
-		
+
 		FXMLLoader login = new FXMLLoader(
 				getClass().getResource("/mg/ankoay/restomanagefinal/login/view/Login.fxml"));
 		Parent root = login.load();
@@ -37,8 +37,8 @@ public class RunApplication extends Application {
 
 		LoginPresenter loginPres = new LoginPresenter(loginCtl, scene);
 		loginPres.setPrimaryStage(primaryStage);
-/*
-		ProductOrderModel.getInstance().loadData();
+		/*	
+		//ProductOrderModel.getInstance().loadData();
 		FXMLLoader prdOrder = new FXMLLoader(
 				getClass().getResource("/mg/ankoay/restomanagefinal/productorders/view/ProductOrder.fxml"));
 		Parent root = prdOrder.load();
@@ -49,12 +49,11 @@ public class RunApplication extends Application {
 
 		Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight() - 32);
 		
-		ProductOrderPresenter prdOrdPres = new ProductOrderPresenter(prdCtl, scene, null);
+		ProductOrderPresenter prdOrdPres = new ProductOrderPresenter(prdCtl, scene, null, null);
 		prdOrdPres.setPrimaryStage(primaryStage);
-		
 */
+	
 		primaryStage.setScene(scene);
-		
 		primaryStage.show();
 	}
 }

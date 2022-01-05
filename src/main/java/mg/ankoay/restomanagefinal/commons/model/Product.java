@@ -17,6 +17,7 @@ public class Product {
 
 // Constructors
 	public Product() {
+		attachEvents();
 	}
 
 	public Product(String _id, String _name, double _price, String _idCateg) {
@@ -24,6 +25,7 @@ public class Product {
 		this.name.set(_name);
 		this.price.set(_price);
 		this.idCategory.set(_idCateg);
+		attachEvents();
 	}
 
 	public Product(String _id, String _name, double _price, String _idCateg, int _quantity) {
@@ -33,9 +35,16 @@ public class Product {
 		this.idCategory.set(_idCateg);
 		this.quantity.set(_quantity);
 		this.total.set(_quantity * _price);
+		attachEvents();
 	}
 
 // Methods
+	
+	private void attachEvents() {
+		this.quantityProperty().addListener((obs, oldVal, newVal) -> {
+			this.setTotal(this.getQuantity() * this.getPrice());
+		});
+	}
 	
 	public void reset() {
 		this.setQuantity(1);
