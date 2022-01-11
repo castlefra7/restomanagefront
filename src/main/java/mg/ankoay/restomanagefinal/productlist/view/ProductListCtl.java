@@ -29,15 +29,15 @@ public class ProductListCtl implements Initializable {
 	@FXML
 	VBox container;
 	@FXML
-	Button decQtyBtn;
+	Button btnDecQty;
 	@FXML
-	Button incQtyBtn;
+	Button btnIncQty;
 	@FXML
-	TextField qtyTxt;
+	TextField txtQty;
 	@FXML
-	Label prodNameLbl;
+	Label lblProdName;
 	@FXML
-	Label totalPriceLbl;
+	Label lblTotalPrice;
 	@FXML
 	Button btnOrder;
 	@FXML
@@ -50,6 +50,8 @@ public class ProductListCtl implements Initializable {
 	Button btnAllOrders;
 	@FXML
 	Button btnUpdateOrder;
+	@FXML
+	TextField txtLaterPay;
 	
 
 // Center Pane	
@@ -58,6 +60,8 @@ public class ProductListCtl implements Initializable {
 	
 	@FXML
 	Button btnBack;
+	@FXML
+	Button btnExpense;
 
 	@FXML
 	FlowPane products;
@@ -67,7 +71,7 @@ public class ProductListCtl implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.model = ProductListModel.getInstance();
-		this.qtyTxt.setEditable(false);
+		this.txtQty.setEditable(false);
 		
 		this.btnUpdateOrder.setVisible(false);
 		
@@ -75,11 +79,17 @@ public class ProductListCtl implements Initializable {
 		this.status.setText("");
 		
 		bindFieldsToModel();
-		
+		conf();
+	}
+	
+	private void conf() {
+		this.txtLaterPay.setPromptText("Spécifier si c'est une échéance");
 	}
 
-	public void bindFieldsToModel() {
+	private void bindFieldsToModel() {
 		this.sldProdTbl.setItems(this.model.getProductSltList());
+		
+		this.model.laterPaymentProperty().bindBidirectional(this.txtLaterPay.textProperty());
 		
 		this.model.getTableSelected().addListener((obs, oldVal, newVal) -> {
 			this.cmbTables.getSelectionModel().select(newVal);

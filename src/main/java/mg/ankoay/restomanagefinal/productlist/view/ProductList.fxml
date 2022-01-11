@@ -46,10 +46,10 @@
 				</TableView>
 				<HBox>
 					<children>
-						<Button prefWidth="100.0" styleClass="btnCustom" fx:id="decQtyBtn" text="-" />
-						<TextField  alignment="CENTER" prefWidth="50.0" fx:id="qtyTxt" />
-						<Button prefWidth="100.0" styleClass="btnCustom" fx:id="incQtyBtn" text="+" />
-						<Label fx:id="prodNameLbl">
+						<Button prefWidth="100.0" styleClass="btnCustom" fx:id="btnDecQty" text="-" />
+						<TextField  alignment="CENTER" prefWidth="50.0" fx:id="txtQty" />
+						<Button prefWidth="100.0" styleClass="btnCustom" fx:id="btnIncQty" text="+" />
+						<Label fx:id="lblProdName">
 							<padding>
 								<Insets top="0" left="10" right="0" bottom="0"/>
 							</padding>
@@ -65,12 +65,21 @@
 					<children>
 						<Label fx:id="lblTotToPay" text="Total à payer:" />
 						<Region HBox.hgrow="ALWAYS" />
-						<Label fx:id="totalPriceLbl" text="0 MGA" />
+						<Label fx:id="lblTotalPrice" text="0 MGA" />
 					</children>
 					<padding>
 						<Insets top="10" left="0" right="0" bottom="10"/>
 					</padding>
-				</HBox>					
+				</HBox>		
+				<HBox spacing="7">
+					<children>
+						<Label fx:id="lblLaterPay" text="Echéance:" HBox.hgrow="ALWAYS"  />
+						<TextField fx:id="txtLaterPay" HBox.hgrow="ALWAYS"  text="" />
+					</children>
+					<padding>
+						<Insets top="10" left="0" right="0" bottom="10"/>
+					</padding>
+				</HBox>			
 				<HBox spacing="7">
 					<children>
 						<Button styleClass="btnCustom" maxWidth="Infinity" HBox.hgrow="ALWAYS" fx:id="btnOrder" text="Commander" />
@@ -86,7 +95,12 @@
 	</left>
 	<center>
 		<VBox>
-			<Button  styleClass="btnCustom"  text="Retour vers menu" fx:id="btnBack" />
+			<HBox spacing="7">
+				<children>
+					<Button  styleClass="btnCustom"  text="Retour vers menu" fx:id="btnBack" />
+					<Button  styleClass="btnCustom"  text="Dépense diverse" fx:id="btnExpense" />	
+				</children>
+			</HBox>
 			<HBox>
 				<children>
 					<Label styleClass="lblSubtitle"  HBox.hgrow="ALWAYS" text="Catégories" />

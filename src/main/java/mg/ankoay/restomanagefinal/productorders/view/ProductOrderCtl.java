@@ -11,10 +11,12 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import mg.ankoay.restomanagefinal.commons.model.Product;
+import mg.ankoay.restomanagefinal.productorders.model.Expense;
 import mg.ankoay.restomanagefinal.productorders.model.ProductOrder;
 import mg.ankoay.restomanagefinal.productorders.model.ProductOrderModel;
 
@@ -35,8 +37,7 @@ public class ProductOrderCtl implements Initializable {
 	Button btnPay;
 	@FXML
 	Button btnUpdate;
-	
-	
+
 	@FXML
 	DatePicker dtpDate;
 	@FXML
@@ -45,7 +46,13 @@ public class ProductOrderCtl implements Initializable {
 	Button btnNext;
 	@FXML
 	TableView<ProductOrder> tblOrdersPaid;
+
+	@FXML
+	TableView<Expense> tblExpenses;
 	
+	@FXML
+	ComboBox<String> cmbTypesLate;
+
 	private ProductOrderModel model;
 
 	@Override
@@ -57,30 +64,43 @@ public class ProductOrderCtl implements Initializable {
 		bindFieldsToModel();
 		conf();
 	}
-	
+
 	public void syncTxtOrderDetailsTotal() {
-		if(this.model.getProducOrdertSelected().get() != null) {
-			this.txtOrderDetailsTotal.setText(NumberFormat.getInstance().format(this.model.getProducOrdertSelected().get().getTotal()) + " Ar");
+		if (this.model.getProducOrdertSelected().get() != null) {
+			this.txtOrderDetailsTotal.setText(
+					NumberFormat.getInstance().format(this.model.getProducOrdertSelected().get().getTotal()) + " Ar");
 		} else {
 			this.txtOrderDetailsTotal.setText(NumberFormat.getInstance().format(0) + " Ar");
 		}
 	}
-	
+
 	public void conf() {
 		this.txtOrderDetailsTotal.setEditable(false);
 		this.txtOrderDetailsDt.setEditable(false);
 		this.txtOrderDetailsTable.setEditable(false);
-		
+
 		this.btnUpdate.setDisable(true);
 		this.btnPay.setDisable(true);
-		
+
 		this.dtpDate.setEditable(false);
 		this.dtpDate.setValue(LocalDate.now());
+		
+
+		this.cmbTypesLate.getItems().add("Tous");
+		this.cmbTypesLate.getItems().add("Avec échéance");
+		this.cmbTypesLate.getItems().add("Pas d'échéance");
+		
+		this.cmbTypesLate.getSelectionModel().select(0);
+		
 	}
-	
+
 	public void bindFieldsToModel() {
-		this.tblOrdersUnpaid.setItems(this.model.getProductOrders());
+		
+		
+	
+		this.tblOrdersUnpaid.setItems(this.model.getFilteredProductOrdersUnpaid());		
 		this.tblOrdersPaid.setItems(this.model.getProductOrdersPaid());
+		this.tblExpenses.setItems(this.model.getExpenses());
 	}
 
 }

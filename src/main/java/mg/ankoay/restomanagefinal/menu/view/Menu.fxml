@@ -22,9 +22,12 @@
 						<Insets top="0" left="0" right="0" bottom="17"/>
 					</padding>
 				</Label>
-				<Button minHeight="150" minWidth="300" fx:id="btnJourneyBegin" text="Ouverture caisse" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-				<Button minHeight="150" minWidth="300" fx:id="btnPOS" text="Caisse enregistreuse" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-				<Button minHeight="150" minWidth="300" fx:id="btnJourneyEnd" text="Fermeture caisse" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+				<Label fx:id="lblUnpaidLatePay" GridPane.columnSpan="2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				<Button minHeight="150" minWidth="300" fx:id="btnJourneyBegin" text="Ouverture caisse" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+				<Button minHeight="150" minWidth="300" fx:id="btnPOS" text="Caisse enregistreuse" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+				<Button minHeight="150" minWidth="300" fx:id="btnJourneyEnd" text="Fermeture caisse" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+				<Button minHeight="150" minWidth="300" fx:id="btnOrders" text="Liste commandes" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+				
 			</children>
 			<padding>
 				<Insets top="250" />

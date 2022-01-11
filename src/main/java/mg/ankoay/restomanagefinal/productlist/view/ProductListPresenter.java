@@ -14,19 +14,24 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import mg.ankoay.restomanagefinal.commons.model.Category;
 import mg.ankoay.restomanagefinal.commons.model.Product;
 import mg.ankoay.restomanagefinal.commons.model.Table;
+import mg.ankoay.restomanagefinal.commons.utils.Utils;
 import mg.ankoay.restomanagefinal.commons.view.Presenter;
+import mg.ankoay.restomanagefinal.expense.model.Expense;
 import mg.ankoay.restomanagefinal.productlist.model.ProductListModel;
 import mg.ankoay.restomanagefinal.productorders.model.ProductOrder;
 import mg.ankoay.restomanagefinal.productorders.model.ProductOrderModel;
 import mg.ankoay.restomanagefinal.productorders.view.ProductOrderCtl;
 import mg.ankoay.restomanagefinal.productorders.view.ProductOrderPresenter;
+import mg.ankoay.restomanagefinal.utils.GenericForm;
 
 public class ProductListPresenter extends Presenter {
 	private final ProductListModel model;
@@ -75,7 +80,7 @@ public class ProductListPresenter extends Presenter {
 
 		});
 
-		this.view.totalPriceLbl.textProperty().bind(this.model.getTotalPrice().asString(Locale.FRENCH, "%,.2f MGA"));
+		this.view.lblTotalPrice.textProperty().bind(this.model.totalPriceProperty().asString(Locale.FRENCH, "%,.2f MGA"));
 
 		this.view.btnBack.setOnAction(event -> {
 			this.getPrimaryStage().setScene(this.sceneMenu);
@@ -86,30 +91,30 @@ public class ProductListPresenter extends Presenter {
 			this.model.getProductSelected().setValue(selectedValue);
 
 			if (selectedValue != null) {
-				this.view.qtyTxt.setText(String.valueOf(selectedValue.getQuantity()));
-				this.view.prodNameLbl.setText(selectedValue.getName());
+				this.view.txtQty.setText(String.valueOf(selectedValue.getQuantity()));
+				this.view.lblProdName.setText(Utils.capitalize(selectedValue.getName()));
 			} else {
-				this.view.qtyTxt.setText("");
-				this.view.prodNameLbl.setText("");
+				this.view.txtQty.setText("");
+				this.view.lblProdName.setText("");
 			}
 		});
 
-		this.view.incQtyBtn.setOnAction(e -> {
+		this.view.btnIncQty.setOnAction(e -> {
 			Product selectedValue = this.model.getProductSelected().getValue();
 			if (selectedValue != null) {
 				selectedValue.setQuantity(selectedValue.getQuantity() + 1);
-				this.view.qtyTxt.setText(String.valueOf(selectedValue.getQuantity()));
+				this.view.txtQty.setText(String.valueOf(selectedValue.getQuantity()));
 			}
 		});
 
-		this.view.decQtyBtn.setOnAction(e -> {
+		this.view.btnDecQty.setOnAction(e -> {
 			Product selectedValue = this.model.getProductSelected().getValue();
 			if (selectedValue != null) {
 				if (selectedValue.getQuantity() == 1) {
 					this.model.getProductSltList().remove(selectedValue);
 				} else {
 					selectedValue.setQuantity(selectedValue.getQuantity() - 1);
-					this.view.qtyTxt.setText(String.valueOf(selectedValue.getQuantity()));
+					this.view.txtQty.setText(String.valueOf(selectedValue.getQuantity()));
 				}
 			}
 		});
@@ -154,13 +159,29 @@ public class ProductListPresenter extends Presenter {
 		};
 
 		for (Category cat : this.model.getCategoryList()) {
-			Button btn = new Button(cat.getName());
+			Button btn = new Button(Utils.capitalize(cat.getName()));
 			btn.setPrefSize(250, 100);
 			btn.setUserData(cat);
 			btn.setOnAction(catHandler);
 			this.view.categories.getChildren().add(btn);
 		}
 		fillProducts(prodHandler);
+		
+		this.view.btnExpense.setOnAction(event -> {
+			try {
+			    Stage stage = new Stage();
+				Scene scene = new Scene(GenericForm.getForm(new Expense(), stage), 300, 150);
+	        
+	            
+	            stage.setScene(scene);
+	            stage.initModality(Modality.WINDOW_MODAL);
+	            stage.initOwner(this.getPrimaryStage());
+
+				stage.show();
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}
+		});
 
 		this.model.getProductList().addListener(new ListChangeListener<Product>() {
 			@Override
@@ -181,6 +202,7 @@ public class ProductListPresenter extends Presenter {
 			ProductOrder prdOrd = new ProductOrder();
 			prdOrd.setTable(this.model.getTableSelected().getValue());
 			prdOrd.setDate(new Timestamp((new Date()).getTime()));
+			prdOrd.setLaterPayment(this.model.laterPaymentProperty().get());
 			for (Product product : this.model.getProductSltList()) {
 				prdOrd.getProducts().add(new Product(product.getId(), product.getName(), product.getPrice(),
 						product.getIdCategory(), product.getQuantity()));
@@ -243,7 +265,8 @@ public class ProductListPresenter extends Presenter {
 // CENTER PANE METHODS
 	private void fillProducts(EventHandler<ActionEvent> event) {
 		for (Product prd : this.model.getProductList()) {
-			Button btn = new Button(prd.getName() + " " + prd.getPrice());
+			Button btn = new Button(Utils.capitalize(prd.getName()) + " " + String.format(
+	                Locale.FRANCE, "%,.2f", prd.getPrice()));
 			btn.setPrefSize(250, 100);
 			btn.setUserData(prd);
 			btn.setOnAction(event);

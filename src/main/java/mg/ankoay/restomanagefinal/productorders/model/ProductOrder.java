@@ -11,6 +11,8 @@ import com.google.gson.reflect.TypeToken;
 import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mg.ankoay.restomanagefinal.commons.attributes.ProductAttr;
@@ -32,6 +34,8 @@ public class ProductOrder {
 	private ObjectProperty<Timestamp> date = new SimpleObjectProperty<Timestamp>();
 	private ObjectProperty<Timestamp> datePayment = new SimpleObjectProperty<Timestamp>();
 	private ObjectProperty<Table> table = new SimpleObjectProperty<>();
+	private ObjectProperty<UserOrder> user = new SimpleObjectProperty<>();
+	private StringProperty laterPayment = new SimpleStringProperty(this, "laterPayment", null);
 
 	public ProductOrder() {
 
@@ -52,10 +56,12 @@ public class ProductOrder {
 		OrderAttr attr = new OrderAttr();
 // TODO: WHAT TO DO WITH THE USER ID
 		Integer idUser = Integer.valueOf(User.getInstance().getId());
-		attr.setId_user(idUser);
+
+		attr.setLater_payment(this.getLaterPayment());
+		attr.setUser(new UserOrder(idUser));
 		attr.setId_order(getId_order());
 		attr.setTable(new TableAttr(Integer.valueOf(this.getTable().getId())));
-		
+
 		Set<OrderDetailAttr> orderDetails = new HashSet<>();
 		for (Product product : products) {
 			OrderDetailAttr ordDet = new OrderDetailAttr();
@@ -72,7 +78,6 @@ public class ProductOrder {
 		if (respOrd.getStatut().getCode() != 200) {
 			throw new Exception(respOrd.getStatut().getMessage());
 		}
-
 
 	}
 
@@ -107,6 +112,7 @@ public class ProductOrder {
 
 		OrderAttr attr = new OrderAttr();
 		attr.setTable(new TableAttr(Integer.valueOf(this.getTable().getId())));
+		attr.setLater_payment(this.getLaterPayment());
 
 		Set<OrderDetailAttr> orderDetails = new HashSet<>();
 		for (Product product : products) {
@@ -121,7 +127,8 @@ public class ProductOrder {
 
 		String entity = gson.toJson(attr);
 		String endpoint = "/orders/";
-		if(paid) endpoint = "/orders-pay/";
+		if (paid)
+			endpoint = "/orders-pay/";
 		ResponseBody<Object> respOrd = gson.fromJson(Utils.postJSON(URL + endpoint, entity), type);
 		result = respOrd.getStatut().getMessage();
 
@@ -129,6 +136,7 @@ public class ProductOrder {
 	}
 
 // Properties
+
 	public ObjectProperty<Timestamp> datePaymentProperty() {
 		return datePayment;
 	}
@@ -142,6 +150,23 @@ public class ProductOrder {
 	}
 
 // Getters and Setters
+	
+	public void setLaterPayment(String _later) {
+		this.laterPayment.set(_later);
+	}
+	
+	public String getLaterPayment() {
+		return this.laterPayment.get();
+	}
+
+	public UserOrder getUser() {
+		return this.user.get();
+	}
+
+	public void setUser(UserOrder _user) {
+		this.user.set(_user);
+	}
+
 	public void setTable(Table _table) {
 		this.table.set(_table);
 	}

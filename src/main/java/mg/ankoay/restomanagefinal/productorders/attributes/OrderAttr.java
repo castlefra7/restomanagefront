@@ -4,21 +4,32 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 import mg.ankoay.restomanagefinal.commons.attributes.TableAttr;
+import mg.ankoay.restomanagefinal.productorders.model.UserOrder;
 
 public class OrderAttr {
 	private Integer id_order;
-	private Integer id_user;
+
 	private Set<OrderDetailAttr> orderDetails;
 	private Timestamp date_order;
 	private TableAttr table;
 	private Timestamp date_payment;
+	private UserOrder user;
+	private String later_payment;
 
-	public Integer getId_user() {
-		return id_user;
+	public String getLater_payment() {
+		return later_payment;
 	}
 
-	public void setId_user(Integer id_user) {
-		this.id_user = id_user;
+	public void setLater_payment(String later_payment) {
+		this.later_payment = later_payment;
+	}
+
+	public UserOrder getUser() {
+		return user;
+	}
+
+	public void setUser(UserOrder user) {
+		this.user = user;
 	}
 
 	public Timestamp getDate_payment() {

@@ -1,4 +1,4 @@
-#lblTotToPay {
+#lblTotToPay, #lblLaterPay {
 	 -fx-font-weight:bold;
 	 -fx-font-size: 20px;
 	 -fx-text-fill: white;
@@ -14,13 +14,13 @@
 	-fx-font-weight: 900;
 }
 
-#totalPriceLbl {
+#lblTotalPrice {
 	-fx-text-fill: yellow;
 	-fx-font-size: 24px;
 	-fx-font-weight: 900;
 }
 
-#prodNameLbl {
+#lblProdName {
 	-fx-text-fill: white;
 	-fx-font-size: 20px;
 	-fx-font-weight: 900;

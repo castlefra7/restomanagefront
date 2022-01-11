@@ -11,11 +11,15 @@ import mg.ankoay.restomanagefinal.closecashier.model.CloseCashierModel;
 import mg.ankoay.restomanagefinal.closecashier.view.CloseCashierCtl;
 import mg.ankoay.restomanagefinal.closecashier.view.CloseCashierPresenter;
 import mg.ankoay.restomanagefinal.commons.view.Presenter;
+import mg.ankoay.restomanagefinal.menu.model.MenuModel;
 import mg.ankoay.restomanagefinal.opencashier.view.OpenCashierCtl;
 import mg.ankoay.restomanagefinal.opencashier.view.OpenCashierPresenter;
 import mg.ankoay.restomanagefinal.productlist.model.ProductListModel;
 import mg.ankoay.restomanagefinal.productlist.view.ProductListCtl;
 import mg.ankoay.restomanagefinal.productlist.view.ProductListPresenter;
+import mg.ankoay.restomanagefinal.productorders.model.ProductOrderModel;
+import mg.ankoay.restomanagefinal.productorders.view.ProductOrderCtl;
+import mg.ankoay.restomanagefinal.productorders.view.ProductOrderPresenter;
 
 public class MenuPresenter extends Presenter {
 	MenuCtl view;
@@ -36,7 +40,44 @@ public class MenuPresenter extends Presenter {
 		this.view.btnJourneyEnd.setOnAction(event -> {
 			showCloseCashier();
 		});
+		this.view.btnOrders.setOnAction(event -> {
+			showProductOrder();
+		});
+		
+		try {
+			Integer count = MenuModel.getInstance().getCountLatePay();
+			this.view.lblUnpaidLatePay.setText(count.toString() + " commande(s) avec échéance non payée(s) hier");
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
 	}
+	
+	private void showProductOrder() {
+		// Open Scene		 
+				try {
+					ProductOrderModel.getInstance().loadData(null);
+					FXMLLoader prdOrder = new FXMLLoader(
+							getClass().getResource("/mg/ankoay/restomanagefinal/productorders/view/ProductOrder.fxml"));
+					Parent root = prdOrder.load();
+					ProductOrderCtl prdCtl = prdOrder.getController();
+
+					Screen screen = Screen.getPrimary();
+					Rectangle2D bounds = screen.getVisualBounds();
+
+					Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight() - 32);
+					scene.getStylesheets().add(getClass()
+							.getResource("/mg/ankoay/restomanagefinal/productorders/view/productorders.css").toExternalForm());
+
+					ProductOrderPresenter prdOrdPres = new ProductOrderPresenter(prdCtl, scene, this.scene,
+							this.scene);
+					prdOrdPres.setPrimaryStage(this.getPrimaryStage());
+
+					this.getPrimaryStage().setScene(scene);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
 	
 	private void showCloseCashier() {
 		try {

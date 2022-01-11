@@ -1,6 +1,7 @@
 package mg.ankoay.restomanagefinal.productorders.view;
 
 import java.time.LocalDate;
+import java.util.function.Predicate;
 
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -88,6 +89,38 @@ public class ProductOrderPresenter extends Presenter {
 			}
 
 		});
+		
+		this.view.cmbTypesLate.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+			if(newVal.compareTo("Avec échéance") == 0) {
+				this.model.getFilteredProductOrdersUnpaid().setPredicate(new Predicate<ProductOrder>() {
+					public boolean test(ProductOrder prd) {
+						return prd.getLaterPayment()!= null && !prd.getLaterPayment().isEmpty();
+					}
+				});
+
+			} else if(newVal.compareTo("Pas d'échéance") == 0) {
+				this.model.getFilteredProductOrdersUnpaid().setPredicate(new Predicate<ProductOrder>() {
+					public boolean test(ProductOrder prd) {
+						return prd.getLaterPayment() == null;
+					}
+				});
+
+			} else if (newVal.compareTo("Tous") == 0) {
+				this.model.getFilteredProductOrdersUnpaid().setPredicate(new Predicate<ProductOrder>() {
+					public boolean test(ProductOrder prd) {
+						return true;
+					}
+				});
+			}
+		});
+
+// Selection item property		
+		this.view.tblExpenses.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+			if (newVal != null) {
+				this.view.btnPay.setDisable(true);
+				this.view.btnUpdate.setDisable(true);
+			}
+		});
 
 		this.view.tblOrdersUnpaid.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newVal) -> {
 			showSlctOrder(newVal, false);
@@ -95,6 +128,16 @@ public class ProductOrderPresenter extends Presenter {
 
 		this.view.tblOrdersPaid.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newVal) -> {
 			showSlctOrder(newVal, true);
+		});
+
+// Focus property		
+
+		this.view.tblExpenses.focusedProperty().addListener((obs, old, newVal) -> {
+			if (newVal == false) {
+				if (this.view.tblExpenses.getSelectionModel().isEmpty() == false) {
+					this.view.tblExpenses.getSelectionModel().clearSelection();
+				}
+			}
 		});
 
 		this.view.tblOrdersUnpaid.focusedProperty().addListener((obs, old, newVal) -> {
@@ -120,8 +163,9 @@ public class ProductOrderPresenter extends Presenter {
 		this.view.btnPay.setOnAction(event -> {
 			try {
 				this.model.pay();
-				this.model.loadData(null);
-
+				
+				this.model.loadData(this.view.dtpDate.getValue().toString());
+				
 				this.model.getProducOrdertSelected().setValue(null);
 
 				this.view.btnPay.setDisable(true);
@@ -168,6 +212,11 @@ public class ProductOrderPresenter extends Presenter {
 			for (Product prod : this.model.getProducOrdertSelected().get().getProducts()) {
 				ProductListModel.getInstance().addProduct(prod);
 			}
+
+			ProductListModel.getInstance().laterPaymentProperty()
+					.set(this.model.getProducOrdertSelected().get().getLaterPayment());
+
+			this.model.getProducOrdertSelected().get().getLaterPayment();
 
 		} catch (Exception ex) {
 			ex.printStackTrace();

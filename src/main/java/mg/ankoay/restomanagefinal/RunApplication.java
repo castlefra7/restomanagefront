@@ -9,9 +9,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import mg.ankoay.restomanagefinal.login.view.LoginCtl;
 import mg.ankoay.restomanagefinal.login.view.LoginPresenter;
-import mg.ankoay.restomanagefinal.productorders.model.ProductOrderModel;
-import mg.ankoay.restomanagefinal.productorders.view.ProductOrderCtl;
-import mg.ankoay.restomanagefinal.productorders.view.ProductOrderPresenter;
 
 public class RunApplication extends Application {
 	protected static int counter = 0;
@@ -23,7 +20,7 @@ public class RunApplication extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("POS Restaurant");
-
+		
 		FXMLLoader login = new FXMLLoader(
 				getClass().getResource("/mg/ankoay/restomanagefinal/login/view/Login.fxml"));
 		Parent root = login.load();
@@ -37,6 +34,7 @@ public class RunApplication extends Application {
 
 		LoginPresenter loginPres = new LoginPresenter(loginCtl, scene);
 		loginPres.setPrimaryStage(primaryStage);
+		
 		/*	
 		//ProductOrderModel.getInstance().loadData();
 		FXMLLoader prdOrder = new FXMLLoader(
@@ -52,7 +50,11 @@ public class RunApplication extends Application {
 		ProductOrderPresenter prdOrdPres = new ProductOrderPresenter(prdCtl, scene, null, null);
 		prdOrdPres.setPrimaryStage(primaryStage);
 */
-	
+		
+		/* Generic CRUD
+		 */
+		
+		
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}

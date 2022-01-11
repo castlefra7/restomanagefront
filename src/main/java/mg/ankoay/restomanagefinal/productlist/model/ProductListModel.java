@@ -12,6 +12,8 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -25,7 +27,6 @@ import mg.ankoay.restomanagefinal.commons.model.Product;
 import mg.ankoay.restomanagefinal.commons.model.Table;
 import mg.ankoay.restomanagefinal.commons.utils.ResponseBody;
 import mg.ankoay.restomanagefinal.commons.utils.Utils;
-import mg.ankoay.restomanagefinal.productorders.attributes.OrderAttr;
 import mg.ankoay.restomanagefinal.productorders.model.ProductOrder;
 
 public class ProductListModel {
@@ -51,6 +52,8 @@ public class ProductListModel {
 	private ProductOrder prdOrder;
 	private final SimpleBooleanProperty isUpdate = new SimpleBooleanProperty();
 
+	private final StringProperty laterPayment = new SimpleStringProperty();
+	
 	public ProductListModel() {
 		attachListeners();
 	}
@@ -92,6 +95,7 @@ public class ProductListModel {
 		}
 // SET SELECTED TABLE	
 		prdOrder.setTable(this.tableSelected.get());
+		prdOrder.setLaterPayment(this.laterPaymentProperty().get());
 // SEND THE UPDATE		
 		prdOrder.update();
 	}
@@ -141,6 +145,8 @@ public class ProductListModel {
 		this.productSelected.setValue(null);
 		this.productSltList.clear();
 		this.prdOrder = null;
+		
+		this.laterPayment.set(null);
 		this.isUpdateProperty().set(false);
 	}
 
@@ -214,7 +220,7 @@ public class ProductListModel {
 		return productSelected;
 	}
 
-	public SimpleDoubleProperty getTotalPrice() {
+	public SimpleDoubleProperty totalPriceProperty() {
 		return totalPrice;
 	}
 
@@ -224,6 +230,10 @@ public class ProductListModel {
 
 	public ObjectProperty<Table> getTableSelected() {
 		return this.tableSelected;
+	}
+	
+	public StringProperty laterPaymentProperty() {
+		return this.laterPayment;
 	}
 
 }

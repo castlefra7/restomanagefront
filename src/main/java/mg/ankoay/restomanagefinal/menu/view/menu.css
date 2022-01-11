@@ -6,3 +6,9 @@
 .root {
 	-fx-background-color: #C48252;
 }
+
+#lblUnpaidLatePay {
+	-fx-font-size: 20px;
+	-fx-font-weight: 900;
+	-fx-text-fill: orange;
+}
