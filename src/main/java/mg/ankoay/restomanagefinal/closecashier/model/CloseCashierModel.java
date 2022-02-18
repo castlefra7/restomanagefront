@@ -33,7 +33,10 @@ public class CloseCashierModel {
 		SimpleDateFormat sdt = new SimpleDateFormat("yyyy-MM-dd");
 		ResponseBody<StatSellingAttr> respStat = gson.fromJson(Utils.getJSON(URL + "/stat/selling-sum?date=" + sdt.format(new Date())), type);
 		if(respStat.getData().size() > 0) {
-			this.setSysAmnt(respStat.getData().get(0).getSumSellingAmount());
+			if(respStat.getData().get(0).getSumSellingAmount() == null) {
+				this.setSysAmnt(0.0);
+			} else this.setSysAmnt(respStat.getData().get(0).getSumSellingAmount());
+			
 		}
 	}
 	public boolean close() throws Exception {
